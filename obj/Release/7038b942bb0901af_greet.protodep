@@ -1,0 +1,2 @@
+obj\Release/Greet.cs \
+obj\Release/GreetGrpc.cs: ../gRPC.Server/Protos/greet.proto
