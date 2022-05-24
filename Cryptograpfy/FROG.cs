@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KP_Crypt.Cryptograpfy.FROGalg
 {
@@ -48,8 +45,8 @@ namespace KP_Crypt.Cryptograpfy.FROGalg
         public override byte[] Decrypt(byte[] infoBytes)
         {
         
-           byte[] outputBuffer = new byte[infoBytes.Length];
-           infoBytes.CopyTo(outputBuffer, 0);
+           byte[] outInfo = new byte[infoBytes.Length];
+           infoBytes.CopyTo(outInfo, 0);
 
            for (int round = 8; round > 0; round--)
            {
@@ -58,24 +55,24 @@ namespace KP_Crypt.Cryptograpfy.FROGalg
                    // -4. По индексу из ключа (его 3ей части)
                    // XOR'им определенные байты данных друг с другом
                    byte index = _decryptRoundKeys[round-1][2][i];
-                   outputBuffer[index] ^= outputBuffer[i];
+                   outInfo[index] ^= outInfo[i];
 
                    // -3. Если предпоследний байт то XOR'им с ним последний
                    if (i < _chipherPartSize - 1)
-                       outputBuffer[i + 1] ^= outputBuffer[i];
+                       outInfo[i + 1] ^= outInfo[i];
                    // -2. Выбирается байт, порядковый номер которого равен значению, вычисленному на первом шаге
-                   outputBuffer[i] = _decryptRoundKeys[round-1][1][outputBuffer[i]];
+                   outInfo[i] = _decryptRoundKeys[round-1][1][outInfo[i]];
                    // -1. XOR байта блока и байта раундового ключа
-                   outputBuffer[i] ^= _decryptRoundKeys[round-1][0][i];
+                   outInfo[i] ^= _decryptRoundKeys[round-1][0][i];
                }
            }
-           return outputBuffer;
+           return outInfo;
         }
 
         public override byte[] Encrypt(byte[] infoBytes)
         {
-            byte[] outputBuffer = new byte[infoBytes.Length];
-            infoBytes.CopyTo(outputBuffer, 0);
+            byte[] outInfo = new byte[infoBytes.Length];
+            infoBytes.CopyTo(outInfo, 0);
 
             //Проходим 8 раундов (в каждом работаем с одним блоком)
             for (int round = 0; round < 8; round++)
@@ -84,19 +81,19 @@ namespace KP_Crypt.Cryptograpfy.FROGalg
                 for (int i = 0; i < _chipherPartSize; i++)
                 {
                     // 1. XOR байта блока и байта раундового ключа
-                    outputBuffer[i] ^= _encryptRoundKeys[round][0][i];
+                    outInfo[i] ^= _encryptRoundKeys[round][0][i];
                     // 2. Выбирается байт, порядковый номер которого равен значению, вычисленному на первом шаге
-                    outputBuffer[i] = _encryptRoundKeys[round][1][outputBuffer[i]];
+                    outInfo[i] = _encryptRoundKeys[round][1][outInfo[i]];
                     // 3. Если предпоследний байт то XOR'им с ним последний
                     if (i < _chipherPartSize - 1)
-                        outputBuffer[i + 1] ^= outputBuffer[i];
+                        outInfo[i + 1] ^= outInfo[i];
                     // 4. По индексу из ключа (его 3ей части)
                     // XOR'им определенные байты данных друг с другом
                     byte index = _encryptRoundKeys[round][2][i];
-                    outputBuffer[index] ^= outputBuffer[i];
+                    outInfo[index] ^= outInfo[i];
                 }
             }
-            return outputBuffer;
+            return outInfo;
         }
 
         private byte[][][] RoundKeyGenerate(byte[] key, Way direction)

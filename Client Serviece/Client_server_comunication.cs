@@ -11,6 +11,7 @@ using Google.Protobuf;
 using gRPC.Server;
 using KP_Crypt.Client_Serviece;
 using KP_Crypt.Cryptograpfy;
+using System.Threading;
 
 namespace KP_Crypt.Client_Serviece
 {
@@ -24,9 +25,6 @@ namespace KP_Crypt.Client_Serviece
         });
 
         private string _name_of_another;
-        private string _file_to_decrypt;
-        private byte[] _frogKeyDecrypted;
-        private byte[] _eGKeyDecrypted;
 
         public ClientServerComunication()
         {
@@ -36,15 +34,15 @@ namespace KP_Crypt.Client_Serviece
         {
             _channel.Dispose();
         }
-        public async Task<string[]> FirstRegistrationAsync(string name) // try //to constructor/ lazy 
+        public async Task<string[]> FirstRegistrationAsync(string name, CancellationToken token) // try //to constructor/ lazy 
         {
             _myName = name;
 
             var response = await _client.SayHelloAsync(new HelloRequest { Name = _myName });// token
-            return await IsAnyoneAtServerAsync();
+            return await IsAnyoneAtServerAsync(token);
         }
 
-        public async Task<string[]> IsAnyoneAtServerAsync()
+        public async Task<string[]> IsAnyoneAtServerAsync(CancellationToken token)
         {
             var others = (await _client.WhoAtServerAsync(new HelloRequest { Name = _myName })).Users.Split(',');
             others = others.Take(others.Length - 1).ToArray();
@@ -52,7 +50,7 @@ namespace KP_Crypt.Client_Serviece
         }
 
 
-        public async Task<int> CleanDefaultDirAsync()
+        public async Task<int> CleanDefaultDirAsync(CancellationToken token)
         {
             var clearing = await _client.ClearDirAsync(new HelloRequest { Name = _myName });
             if (clearing.IsClear == false)
@@ -60,7 +58,7 @@ namespace KP_Crypt.Client_Serviece
             else return 0;
         }
 
-        public async Task<int> SendEGKeyAsync(ulong[] keys)
+        public async Task<int> SendEGKeyAsync(ulong[] keys, CancellationToken token)
         {
             //Создание первичного EG ключа
             string keyToSend = "";
@@ -76,7 +74,7 @@ namespace KP_Crypt.Client_Serviece
             else return 0;
         }
 
-        public async Task<int> SendFROGKeyAsync(byte[] toSend)        
+        public async Task<int> SendFROGKeyAsync(byte[] toSend, CancellationToken token)        
         {
             var sendFROGKey = await _client.SendFileAsync(new FileBuffer
             {
@@ -88,7 +86,7 @@ namespace KP_Crypt.Client_Serviece
             else return 0;
         }
 
-        public async Task<byte[]> TakeEGKeyAsync(string another)
+        public async Task<byte[]> TakeEGKeyAsync(string another, CancellationToken token)
         {
             _name_of_another = another;
             var takeEGKey = await _client.TakeFileAsync(new WhatFile { Filename = $"{_name_of_another}.EGKey" });
@@ -96,11 +94,10 @@ namespace KP_Crypt.Client_Serviece
                 return null;
             else
             {
-                _eGKeyDecrypted = takeEGKey.Info.ToByteArray();
                 return takeEGKey.Info.ToByteArray();
             }
         }
-        public async Task<byte[]> TakeFROGKeyAsync(string another)
+        public async Task<byte[]> TakeFROGKeyAsync(string another, CancellationToken token)
         {
             _name_of_another = another;
             var takeFROGKey = await _client.TakeFileAsync(new WhatFile { Filename = $"{_name_of_another}.FROGKey" });
@@ -112,7 +109,7 @@ namespace KP_Crypt.Client_Serviece
             }
 
         }
-        public async Task<byte[]> TakeFileAsync(string name)
+        public async Task<byte[]> TakeFileAsync(string name, CancellationToken token)
         {
             var takeFile = await _client.TakeFileAsync(new WhatFile { Filename = name });
             if (takeFile.Filename == "" || name == null || name == "")    

@@ -9,19 +9,19 @@ namespace KP_Crypt.Cryptograpfy.CryptModes
 
     public class ECB : CoderBaseAsync
     {
-        private CoderBase _encoder;
+        private CoderBase _coder;
 
-        public ECB(CoderBase encoder)
+        public ECB(CoderBase coder)
         {
-            _chipherPartSize = encoder.GetCryptPartSize();
-            _encoder = encoder;
+            _chipherPartSize = coder.GetCryptPartSize();
+            _coder = coder;
         }
 
         private Task MakeEncryptTask(byte[] inBuf, byte[] outBuf, int offset, int blocksCount)
         {
             return Task.Run(() =>
             {
-                _encoder.Encrypt(inBuf, outBuf, offset, blocksCount);
+                _coder.Encrypt(inBuf, outBuf, offset, blocksCount);
             });
         }
 
@@ -29,11 +29,11 @@ namespace KP_Crypt.Cryptograpfy.CryptModes
         {
             return Task.Run(() =>
             {
-                _encoder.Decrypt(inBuf, outBuf, offset, blocksCount);
+                _coder.Decrypt(inBuf, outBuf, offset, blocksCount);
             });
         }
 
-        public override async Task<byte[]> Encrypt(byte[] inputBytes, int countOfThreads = 4)
+        public override async Task<byte[]> Encrypt(byte[] inputBytes, int countOfThreads = 4) //-countOfThreads
         {
             if (inputBytes.Length == 0)
                 throw new ArgumentException("Data is empty");
@@ -47,23 +47,15 @@ namespace KP_Crypt.Cryptograpfy.CryptModes
 
             Task[] encryptTasks = new Task[countOfThreads];
 
-            for (int i = 0; i < countOfThreads; i++)
-            {
-                if (i == countOfThreads - 1)
-                {
-                    encryptTasks[i] = MakeEncryptTask(inputBytes, result,
-                        i * blocksToOneThread * _chipherPartSize, blocksToLastThread);
-                }
-                else
-                {
-                    encryptTasks[i] = MakeEncryptTask(inputBytes, result,
-                        i * blocksToOneThread * _chipherPartSize, blocksToOneThread);
-                }
-            }
+            var resultall = new List<byte[]>(blocksCount);
+            for (int i = 0; i < blocksCount; i++)
+                resultall.Add(new byte[_chipherPartSize]);
+            
 
-            await Task.WhenAll(encryptTasks);
+            Parallel.For(0, blocksCount,
+                i => resultall[i] = _coder.Encrypt(inputBytes, result, i * 1 * _chipherPartSize, 1));
 
-            return result;
+            return resultall.SelectMany(s => s).ToArray();
         }
 
         public override async Task<byte[]> Decrypt(byte[] inputBytes, int countOfThreads = 4)
@@ -79,23 +71,14 @@ namespace KP_Crypt.Cryptograpfy.CryptModes
             int blocksToLastThread = (blocksToOneThread + blocksCount) % countOfThreads;
             Task[] decryptTasks = new Task[countOfThreads];
 
-            for (int i = 0; i < countOfThreads; i++)
-            {
-                if (i == countOfThreads - 1)
-                {
-                    decryptTasks[i] = MakeDecryptTask(inputBytes, result,
-                        i * blocksToOneThread * _chipherPartSize, blocksToLastThread);
-                }
-                else
-                {
-                    decryptTasks[i] = MakeDecryptTask(inputBytes, result,
-                        i * blocksToOneThread * _chipherPartSize, blocksToOneThread);
-                }
-            }
+            var resultall = new List<byte[]>(blocksCount);
+            for (int i = 0; i < blocksCount; i++)
+                resultall.Add(new byte[_chipherPartSize]);
 
-            await Task.WhenAll(decryptTasks);
+            Parallel.For(0, blocksCount,
+                i => resultall[i] = _coder.Decrypt(inputBytes, result, i * 1 * _chipherPartSize, 1));
 
-            return result;
+            return resultall.SelectMany(s => s).ToArray();
         }
     }
 }

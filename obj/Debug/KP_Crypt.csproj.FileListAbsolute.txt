@@ -1,7 +1,6 @@
 C:\Users\Kon4ka\source\repos\KP_Crypt\bin\Debug\KP_Crypt.exe.config
 C:\Users\Kon4ka\source\repos\KP_Crypt\bin\Debug\KP_Crypt.exe
 C:\Users\Kon4ka\source\repos\KP_Crypt\bin\Debug\KP_Crypt.pdb
-C:\Users\Kon4ka\source\repos\KP_Crypt\obj\Debug\KP_Crypt.csproj.AssemblyReference.cache
 C:\Users\Kon4ka\source\repos\KP_Crypt\obj\Debug\KP_Crypt.Properties.Resources.resources
 C:\Users\Kon4ka\source\repos\KP_Crypt\obj\Debug\KP_Crypt.csproj.GenerateResource.cache
 C:\Users\Kon4ka\source\repos\KP_Crypt\obj\Debug\KP_Crypt.csproj.CoreCompileInputs.cache
@@ -143,3 +142,4 @@ C:\Users\Kon4ka\source\repos\KP_Crypt\bin\Debug\Grpc.Net.Client.Web.dll
 C:\Users\Kon4ka\source\repos\KP_Crypt\bin\Debug\Grpc.Net.Client.Web.pdb
 C:\Users\Kon4ka\source\repos\KP_Crypt\bin\Debug\Grpc.Net.Client.Web.xml
 C:\Users\Kon4ka\source\repos\KP_Crypt\obj\Debug\KP_Crypt.Form2.resources
+C:\Users\Kon4ka\source\repos\KP_Crypt\obj\Debug\KP_Crypt.csproj.AssemblyReference.cache

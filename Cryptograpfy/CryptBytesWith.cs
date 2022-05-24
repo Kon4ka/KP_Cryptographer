@@ -51,9 +51,6 @@ namespace KP_Crypt.Cryptograpfy	//Todo
 				}
 			}
 
-/*			OutputInfo[OutputInfo.Length - 1] = Convert.ToByte(addBytesCount);
-			OutputInfo[OutputInfo.Length - 2] = 0;*/
-
 			return OutputInfo;
 		}
 
@@ -67,53 +64,48 @@ namespace KP_Crypt.Cryptograpfy	//Todo
 			}
 
 			int cryptPartSize = coder.GetCryptPartSize();
-			byte addBytesCount;
+			byte addBytesCount = 0;
 
-			byte[] paddingPart = new byte[cryptPartSize];
+			byte[] outputInfoWithPadd = new byte[infoToDecrypt.Length - addBytesCount];
+			int i;
 
-			for (int j = 0; j < cryptPartSize; j++)
-			{
-				paddingPart[j] = infoToDecrypt[infoToDecrypt.Length-cryptPartSize + j];	// Дешифрование блока с паддингом
-			}
-			byte[] paddingBytes = coder.Decrypt(paddingPart);
-
-			if (paddingBytes[paddingBytes.Length-1] == paddingBytes[paddingBytes.Length - 2])	// Вычисление кол-ва пустот
-            {
-				addBytesCount = paddingBytes[paddingBytes.Length - 1];
-			}
-			else if (paddingBytes[paddingBytes.Length - 1] == 1)
-            {
-				addBytesCount = 1;
-			} else
-            {
-				addBytesCount = 0;
-			}
-
-			byte[] OutputInfo = new byte[infoToDecrypt.Length - addBytesCount];
-
-			// Запись последнего расшифрованного блока (чтоб не дешифровать его дважды)
-			for (int j = 0; j < cryptPartSize && (infoToDecrypt.Length - cryptPartSize + j) < OutputInfo.Length; j++)
-			{
-				OutputInfo[infoToDecrypt.Length - cryptPartSize + j] = paddingBytes[j];
-			}
-
-			for (long i = 0; i < infoToDecrypt.Length - cryptPartSize; i += cryptPartSize) // Дешифровка всего кроме последнего
+			for (long m = 0; m < infoToDecrypt.Length - 1; m += cryptPartSize) // Дешифровка всего кроме последнего
 			{
 				byte[] currentPart = new byte[cryptPartSize];
 				for (int j = 0; j < cryptPartSize; j++)
 				{
-					currentPart[j] = infoToDecrypt[i + j];
+					currentPart[j] = infoToDecrypt[m + j];
 				}
 
 				byte[] cryptBytes = coder.Decrypt(currentPart);
 
-				for (int j = 0; j < cryptPartSize && (i + j) < OutputInfo.Length; j++)
+				for (int j = 0; j < cryptPartSize && (m + j) < outputInfoWithPadd.Length; j++)
 				{
-					OutputInfo[i + j] = cryptBytes[j];
+					outputInfoWithPadd[m + j] = cryptBytes[j];
 				}
 			}
 
-			return OutputInfo;
+			bool is_padding = false;
+			for (i = outputInfoWithPadd.Length - 1; i >= 0; i--)
+			{
+				if (outputInfoWithPadd.Length - i == (byte)outputInfoWithPadd[i])
+				{
+					is_padding = true;
+					for (int j = i; j < outputInfoWithPadd.Length - 1; j++)
+					{
+						if (outputInfoWithPadd[j] != outputInfoWithPadd[i])
+							is_padding = false;
+					}
+					if (!is_padding) i = outputInfoWithPadd.Length;
+					break;
+				}
+			}
+			if (!is_padding) i = outputInfoWithPadd.Length;
+
+			byte[] outdata = new byte[i];
+			for (int j = 0; j < i; j++)
+				outdata[j] = outputInfoWithPadd[j];
+			return outdata;
 		}
 
 	}

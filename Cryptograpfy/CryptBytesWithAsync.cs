@@ -7,19 +7,19 @@ using KP_Crypt.Cryptograpfy.CryptModes;
 
 namespace KP_Crypt.Cryptograpfy
 {
-    public static class CryptBytesWithAsync
+    public static class CryptByteWithArrayAsync
 	{
-		public static async Task<byte[]> CryptBytesAsync(byte[] inputBytes, ECB encoder)
+		public static async Task<byte[]> CryptByteArrayAsync(byte[] infoToCrypt, ECB coder)
 		{
-			if (encoder is null)
+			if (coder is null)
 			{
 				return null;
 			}
 
-			int sizeCryptPie = encoder.GetCryptPartSize();
+			int sizeCryptPie = coder.GetCryptPartSize();
 
 
-			byte addBytesCount = Convert.ToByte(sizeCryptPie - (byte)(inputBytes.Length % sizeCryptPie));
+			byte addBytesCount = Convert.ToByte(sizeCryptPie - (byte)(infoToCrypt.Length % sizeCryptPie));
 
 
 			if (addBytesCount == sizeCryptPie)
@@ -27,12 +27,12 @@ namespace KP_Crypt.Cryptograpfy
 				addBytesCount = 0;
 			}
 
-			byte[] inputInfo = new byte[inputBytes.Length + addBytesCount];
-			byte[] outputInfo = new byte[inputBytes.Length + addBytesCount];
-			inputBytes.CopyTo(inputInfo, 0);
+			byte[] inputInfo = new byte[infoToCrypt.Length + addBytesCount];
+			byte[] outputInfo = new byte[infoToCrypt.Length + addBytesCount + 2];
+			infoToCrypt.CopyTo(inputInfo, 0);
 
 
-			byte[] outputInfo_ = await encoder.Encrypt(inputInfo, 6);
+			byte[] outputInfo_ = await coder.Encrypt(inputInfo, 6);	//-await
 
 			Array.Copy(outputInfo_, outputInfo, outputInfo_.Length);
 
@@ -42,23 +42,23 @@ namespace KP_Crypt.Cryptograpfy
 			return outputInfo;
 		}
 
-		public static async Task<byte[]> UnCryptBytesAsync(byte[] inputBytes, ECB encoder)
+		public static async Task<byte[]> UnCryptByteArrayAsync(byte[] infoToDecrypt, ECB coder)
 		{
-			if (encoder is null)
+			if (coder is null)
 			{
 				return null;
 			}
 
-			int sizeCryptPie = encoder.GetCryptPartSize();
+			int sizeCryptPie = coder.GetCryptPartSize();
 
-			byte addBytesCount = inputBytes[inputBytes.Length - 1];
+			byte addBytesCount = infoToDecrypt[infoToDecrypt.Length - 1];
 
-			byte[] inputInfo = new byte[inputBytes.Length - 2];
-			byte[] outputInfoWithoutAddBytes = new byte[inputBytes.Length - addBytesCount - 2];
+			byte[] inputInfo = new byte[infoToDecrypt.Length - 2];
+			byte[] outputInfoWithoutAddBytes = new byte[infoToDecrypt.Length - addBytesCount - 2];
 
-			Array.Copy(inputBytes, inputInfo, inputInfo.Length);
+			Array.Copy(infoToDecrypt, inputInfo, inputInfo.Length);
 
-			byte[] outputInfo = await encoder.Decrypt(inputInfo, 6);
+			byte[] outputInfo = await coder.Decrypt(inputInfo, 6);
 
 			Array.Copy(outputInfo, outputInfoWithoutAddBytes, outputInfoWithoutAddBytes.Length);
 

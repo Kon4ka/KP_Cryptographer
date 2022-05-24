@@ -27,7 +27,6 @@ C:\Users\Kon4ka\source\repos\gRPC.Server\obj\Debug\netcoreapp3.1\gRPC.Server.dll
 C:\Users\Kon4ka\source\repos\gRPC.Server\obj\Debug\netcoreapp3.1\gRPC.Server.pdb
 C:\Users\Kon4ka\source\repos\gRPC.Server\obj\Debug\netcoreapp3.1\gRPC.Server.genruntimeconfig.cache
 C:\Users\Kon4ka\source\repos\gRPC.Server\bin\Debug\netcoreapp3.1\Grpc.AspNetCore.Web.dll
-C:\Users\Kon4ka\source\repos\KP_Crypt\gRPC.Server\obj\Debug\netcoreapp3.1\gRPC.Server.csproj.AssemblyReference.cache
 C:\Users\Kon4ka\source\repos\KP_Crypt\gRPC.Server\obj\Debug\netcoreapp3.1\gRPC.Server.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\Kon4ka\source\repos\KP_Crypt\gRPC.Server\obj\Debug\netcoreapp3.1\gRPC.Server.AssemblyInfoInputs.cache
 C:\Users\Kon4ka\source\repos\KP_Crypt\gRPC.Server\obj\Debug\netcoreapp3.1\gRPC.Server.AssemblyInfo.cs
@@ -56,3 +55,4 @@ C:\Users\Kon4ka\source\repos\KP_Crypt\gRPC.Server\obj\Debug\netcoreapp3.1\scoped
 C:\Users\Kon4ka\source\repos\KP_Crypt\gRPC.Server\obj\Debug\netcoreapp3.1\gRPC.Server.RazorTargetAssemblyInfo.cache
 C:\Users\Kon4ka\source\repos\KP_Crypt\gRPC.Server\obj\Debug\netcoreapp3.1\gRPC.Server.csproj.CopyComplete
 C:\Users\Kon4ka\source\repos\KP_Crypt\gRPC.Server\obj\Debug\netcoreapp3.1\gRPC.Server.genruntimeconfig.cache
+C:\Users\Kon4ka\source\repos\KP_Crypt\gRPC.Server\obj\Debug\netcoreapp3.1\gRPC.Server.csproj.AssemblyReference.cache

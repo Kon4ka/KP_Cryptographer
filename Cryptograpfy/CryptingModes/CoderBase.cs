@@ -25,30 +25,32 @@ namespace KP_Crypt.Cryptograpfy
             return _chipherPartSize;
         }
 
-        public bool Encrypt(byte[] infoBytes, byte[] outputBuffer, int offset, int countBlocks)
+        public byte[] Encrypt(byte[] infoBytes, byte[] outInfo, int offset, int countBlocks)
         {
-            for (int i = 0; i < countBlocks; i++)
-            {
+/*            for (int i = 0; i < countBlocks; i++)
+            {*/
                 byte[] currentInfoBytes = new byte[_chipherPartSize];
-                Array.Copy(infoBytes, offset + (i * _chipherPartSize), currentInfoBytes, 0, currentInfoBytes.Length);
+                Array.Copy(infoBytes, offset + (0 * _chipherPartSize), currentInfoBytes, 0, currentInfoBytes.Length);
 
                 byte[] currentOutputBuffer = Encrypt(currentInfoBytes);
-                Array.Copy(currentOutputBuffer, 0, outputBuffer, offset + (i * _chipherPartSize), currentOutputBuffer.Length);
-            }
-            return true;
+                Array.Copy(currentOutputBuffer, 0, outInfo, offset + (0 * _chipherPartSize), currentOutputBuffer.Length);
+            return currentOutputBuffer;
+/*            }
+            return true;*/
         }
 
-        public bool Decrypt(byte[] infoBytes, byte[] outputBuffer, int offset, int countBlocks)
+        public byte[] Decrypt(byte[] infoBytes, byte[] outInfo, int offset, int countBlocks)
         {
-            for (int i = 0; i < countBlocks; i++)
-            {
+/*            for (int i = 0; i < countBlocks; i++)
+            {*/
                 byte[] currentInfoBytes = new byte[_chipherPartSize];
-                Array.Copy(infoBytes, offset + (i * _chipherPartSize), currentInfoBytes, 0, currentInfoBytes.Length);
+                Array.Copy(infoBytes, offset + (0 * _chipherPartSize), currentInfoBytes, 0, currentInfoBytes.Length);// 0 - i
 
                 byte[] currentOutputBuffer = Decrypt(currentInfoBytes);
-                Array.Copy(currentOutputBuffer, 0, outputBuffer, offset + (i * _chipherPartSize), currentOutputBuffer.Length);
-            }
-            return true;
+                Array.Copy(currentOutputBuffer, 0, outInfo, offset + (0 * _chipherPartSize), currentOutputBuffer.Length);
+            return currentOutputBuffer;
+/*            }
+            return true;*/
         }
 
         public abstract class CoderAsyncBase 

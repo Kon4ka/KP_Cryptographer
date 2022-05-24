@@ -8,7 +8,7 @@ using KP_Crypt.Cryptograpfy.SimpleTests;
 using System.Security.Cryptography;
 
 namespace KP_Crypt.Cryptograpfy.Prime
-{
+{ 
     public enum PrimeTestMode
     {
         Ferm,

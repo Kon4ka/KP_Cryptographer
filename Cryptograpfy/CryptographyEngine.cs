@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 using KP_Crypt.Cryptograpfy.FROGalg;
 using KP_Crypt.Cryptograpfy.EiGamalAlg;
 using KP_Crypt.Cryptograpfy.CryptModes;
+using KP_Crypt.Cryptograpfy.CryptingModes;
 
 namespace KP_Crypt.Cryptograpfy
 {
     public class CryptographyEngine
     {
         private static CryptographyEngine engine = null; //singltone 
-
         public FROG frog = null;
 		public EiGamal eigamal = null;
 
@@ -20,7 +20,12 @@ namespace KP_Crypt.Cryptograpfy
 		public string frogIVectorString = "";
 
 		private ECB frogECB = null;
-
+		private CBC frogCBC = null;
+		private CFB frogCFB = null;
+		private OFB frogOFB = null;
+		private CTR frogCTR = null;
+		//private RB frogRB = null;
+		//private RBH frogRBH = null;
 		private CryptographyEngine()
         {
 			eigamal = new EiGamal();
@@ -38,12 +43,19 @@ namespace KP_Crypt.Cryptograpfy
 
 		public void CreateFROG(byte[] frogKey, byte[] frogIV)
 		{
-			frog = new FROG(frogKey);
+			try
+			{
+				frog = new FROG(frogKey);
+			}
+			catch
+            {
 
+            }
 			frogECB = new ECB(frog);
-			//frogCBC = new CBC(frog, frogIV); TODO
-			//frogCFB = new CFB(frog, frogIV);
-			//frogOFB = new OFB(frog, frogIV);
+			frogCBC = new CBC(frog, frogIV); 
+			frogCFB = new CFB(frog, frogIV);
+			frogOFB = new OFB(frog, frogIV);
+			frogCTR = new CTR(frog, frogIV);
 
 			frogKeyString += " => " + Encoding.Default.GetString(frogKey);
 		}
@@ -69,9 +81,10 @@ namespace KP_Crypt.Cryptograpfy
 				frog = new FROG(frogKey);
 
 				frogECB = new ECB(frog);
-				//frogCBC = new CBC(frog, frogIV);
-				//frogCFB = new CFB(frog, frogIV); TODO
-				//frogOFB = new OFB(frog, frogIV);
+				frogCBC = new CBC(frog, frogIV);
+				frogCFB = new CFB(frog, frogIV);
+				frogOFB = new OFB(frog, frogIV);
+				frogCTR = new CTR(frog, frogIV);
 
 				result[0] = frogKey;
 				result[1] = frogIV;
@@ -79,7 +92,7 @@ namespace KP_Crypt.Cryptograpfy
 				frogKeyString = Encoding.Default.GetString(frogKey) + " => ";
 				frogIVectorString = Encoding.Default.GetString(frogIV);
 			}
-			while (frogKeyString.Contains("\n") || frogKeyString.Contains("\r") || frogKeyString.Contains("\0"));
+			while (frogKeyString.Contains("\n") || frogKeyString.Contains("\r") || frogKeyString.Contains("\0") || frogIVectorString.Contains("\0"));
 
 			return result;
 		}
@@ -97,17 +110,24 @@ namespace KP_Crypt.Cryptograpfy
 		{
 			switch (cryptmode)
 			{
-				case CryptModesEn.ECB: return await CryptBytesWithAsync.CryptBytesAsync(inputBytes, frogECB);
-				default: return await CryptBytesWithAsync.CryptBytesAsync(inputBytes, frogECB);
+				case CryptModesEn.ECB: return await CryptByteWithArrayAsync.CryptByteArrayAsync(inputBytes, frogECB);
+				case CryptModesEn.CBC: return CryptByteArrayWith.CryptByteArray(inputBytes, frogCBC);
+				case CryptModesEn.CFB: return CryptByteArrayWith.CryptByteArray(inputBytes, frogCFB);
+				case CryptModesEn.OFB: return CryptByteArrayWith.CryptByteArray(inputBytes, frogOFB);
+				case CryptModesEn.CTR: return CryptByteArrayWith.CryptByteArray(inputBytes, frogCTR);
+				default: return await CryptByteWithArrayAsync.CryptByteArrayAsync(inputBytes, frogECB);
 			}
-			//return CryptByteArrayWith.CryptByteArray(inputBytes, frog);
 		}
 		public async Task<byte[]> UnCryptWithFROGAsync(byte[] inputBytes, CryptModesEn cryptmode)
 		{
 			switch (cryptmode)
 			{
-				case CryptModesEn.ECB: return await CryptBytesWithAsync.UnCryptBytesAsync(inputBytes, frogECB);
-				default: return await CryptBytesWithAsync.UnCryptBytesAsync(inputBytes, frogECB);
+				case CryptModesEn.ECB: return await CryptByteWithArrayAsync.UnCryptByteArrayAsync(inputBytes, frogECB);
+				case CryptModesEn.CBC: return CryptByteArrayWith.UnCryptByteArray(inputBytes, frogCBC);
+				case CryptModesEn.CFB: return CryptByteArrayWith.UnCryptByteArray(inputBytes, frogCFB);
+				case CryptModesEn.OFB: return CryptByteArrayWith.UnCryptByteArray(inputBytes, frogOFB);
+				case CryptModesEn.CTR: return CryptByteArrayWith.UnCryptByteArray(inputBytes, frogCTR);
+				default: return await CryptByteWithArrayAsync.UnCryptByteArrayAsync(inputBytes, frogECB);
 			}
 		}
 

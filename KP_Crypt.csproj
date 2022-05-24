@@ -94,9 +94,13 @@
     <Compile Include="Client Serviece\Client_server_comunication.cs" />
     <Compile Include="Cryptograpfy\CryptBytesWith.cs" />
     <Compile Include="Cryptograpfy\CryptBytesWithAsync.cs" />
+    <Compile Include="Cryptograpfy\CryptingModes\CBC.cs" />
+    <Compile Include="Cryptograpfy\CryptingModes\CFB.cs" />
     <Compile Include="Cryptograpfy\CryptingModes\CoderBase.cs" />
     <Compile Include="Cryptograpfy\CryptingModes\CoderBaseAsync.cs" />
+    <Compile Include="Cryptograpfy\CryptingModes\CTR.cs" />
     <Compile Include="Cryptograpfy\CryptingModes\ECB.cs" />
+    <Compile Include="Cryptograpfy\CryptingModes\OFB.cs" />
     <Compile Include="Cryptograpfy\CryptographyEngine.cs" />
     <Compile Include="Cryptograpfy\EiGamal.cs" />
     <Compile Include="Cryptograpfy\FROG.cs" />

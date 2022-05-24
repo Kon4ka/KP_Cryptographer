@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Numerics;
 using KP_Crypt.Cryptograpfy.Prime;
 using System.Security.Cryptography;

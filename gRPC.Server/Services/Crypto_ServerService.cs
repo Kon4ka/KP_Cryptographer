@@ -14,16 +14,16 @@ namespace gRPC.Server
     {
         private readonly ILogger<Crypto_ServerService> _logger;
         private readonly List<string> _users = new List<string>();   
-        private string _defaultPath = "./UserFiles/";
+        private string _defaultPath = "/UserFiles/";
         public Crypto_ServerService(ILogger<Crypto_ServerService> logger)
         {
             _logger = logger;
             string path = Directory.GetCurrentDirectory();
-            if (!Directory.Exists(path + "/UserFiles/"))
+            if (!Directory.Exists(path + _defaultPath))
             {
-                Directory.CreateDirectory(path + "/UserFiles/");
+                Directory.CreateDirectory(path + _defaultPath);
             }
-            _defaultPath = path + "/UserFiles/";
+            _defaultPath = path + _defaultPath;
             //File.WriteAllBytes(path + "/UserFiles/" + filename + ".txt", decryptedText);
         }
 
@@ -170,17 +170,19 @@ namespace gRPC.Server
         {
             try
             {
-                List<string> allfiles = (from a in Directory.GetFiles(_defaultPath) select Path.GetFileName(a)).ToList();
+                List<string> allfiles = (from a in Directory.GetFiles(_defaultPath) 
+                                         select Path.GetFileName(a)).ToList();
 
-                string allfilenames_str = "";
+                StringBuilder allfilenames_str = new StringBuilder();
                 foreach (var file in allfiles)
                 {
-                    allfilenames_str += Path.GetFileNameWithoutExtension(file) + ",";
+                    allfilenames_str.Append(Path.GetFileNameWithoutExtension(file));
+                    allfilenames_str.Append(",");
                 }
                 return Task.FromResult(new FileList
                 {
 
-                    Files = allfilenames_str
+                    Files = allfilenames_str.ToString()
                 });
             }
             catch
