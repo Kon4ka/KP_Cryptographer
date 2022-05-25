@@ -53,12 +53,12 @@ namespace KP_Crypt.Cryptograpfy
             return true;*/
         }
 
-        public abstract class CoderAsyncBase 
+        public abstract class CoderBaseAsync 
         {
 
             protected int _chipherPartSize = 8;
 
-            protected CoderAsyncBase()
+            protected CoderBaseAsync()
             { }
 
             public int GetSizeofCipherPie()

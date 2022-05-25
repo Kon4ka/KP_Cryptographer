@@ -24,8 +24,7 @@ namespace KP_Crypt.Cryptograpfy
 		private CFB frogCFB = null;
 		private OFB frogOFB = null;
 		private CTR frogCTR = null;
-		//private RB frogRB = null;
-		//private RBH frogRBH = null;
+
 		private CryptographyEngine()
         {
 			eigamal = new EiGamal();
