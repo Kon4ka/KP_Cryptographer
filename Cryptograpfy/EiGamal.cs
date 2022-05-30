@@ -41,6 +41,7 @@ namespace KP_Crypt.Cryptograpfy.EiGamalAlg
             return null;
         }
 
+
         private string Encrypting(string infoStr)
         {
             string res = "";

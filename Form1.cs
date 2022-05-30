@@ -168,6 +168,7 @@ namespace KP_Crypt
                 return;
             }
             label3.Text = "Файл: " + filename + " открыт и готов для шифрования.";
+
             //Шифрование FROG'ом
             byte[] encryptedFile = EncryptFile(fileTextByte).Result;   //progress bar 
 
