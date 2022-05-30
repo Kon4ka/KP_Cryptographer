@@ -64,6 +64,8 @@ namespace gRPC.Server {
     static readonly grpc::Marshaller<global::gRPC.Server.FileList> __Marshaller_greet_FileList = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::gRPC.Server.FileList.Parser));
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Marshaller<global::gRPC.Server.ClearAll> __Marshaller_greet_ClearAll = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::gRPC.Server.ClearAll.Parser));
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Marshaller<global::gRPC.Server.EGBuffer> __Marshaller_greet_EGBuffer = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::gRPC.Server.EGBuffer.Parser));
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Method<global::gRPC.Server.HelloRequest, global::gRPC.Server.HelloReply> __Method_SayHello = new grpc::Method<global::gRPC.Server.HelloRequest, global::gRPC.Server.HelloReply>(
@@ -120,6 +122,22 @@ namespace gRPC.Server {
         "ClearDir",
         __Marshaller_greet_HelloRequest,
         __Marshaller_greet_ClearAll);
+
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Method<global::gRPC.Server.WhatFile, global::gRPC.Server.EGBuffer> __Method_TakeEG = new grpc::Method<global::gRPC.Server.WhatFile, global::gRPC.Server.EGBuffer>(
+        grpc::MethodType.Unary,
+        __ServiceName,
+        "TakeEG",
+        __Marshaller_greet_WhatFile,
+        __Marshaller_greet_EGBuffer);
+
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Method<global::gRPC.Server.EGBuffer, global::gRPC.Server.IsWritten> __Method_SendEG = new grpc::Method<global::gRPC.Server.EGBuffer, global::gRPC.Server.IsWritten>(
+        grpc::MethodType.Unary,
+        __ServiceName,
+        "SendEG",
+        __Marshaller_greet_EGBuffer,
+        __Marshaller_greet_IsWritten);
 
     /// <summary>Service descriptor</summary>
     public static global::Google.Protobuf.Reflection.ServiceDescriptor Descriptor
@@ -222,21 +240,49 @@ namespace gRPC.Server {
       {
         return CallInvoker.AsyncUnaryCall(__Method_SayBye, null, options, request);
       }
+      /// <summary>
+      ///на сервер
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+      /// <param name="cancellationToken">An optional token for canceling the call.</param>
+      /// <returns>The response received from the server.</returns>
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
       public virtual global::gRPC.Server.IsWritten SendFile(global::gRPC.Server.FileBuffer request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return SendFile(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
+      /// <summary>
+      ///на сервер
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="options">The options for the call.</param>
+      /// <returns>The response received from the server.</returns>
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
       public virtual global::gRPC.Server.IsWritten SendFile(global::gRPC.Server.FileBuffer request, grpc::CallOptions options)
       {
         return CallInvoker.BlockingUnaryCall(__Method_SendFile, null, options, request);
       }
+      /// <summary>
+      ///на сервер
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+      /// <param name="cancellationToken">An optional token for canceling the call.</param>
+      /// <returns>The call object.</returns>
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
       public virtual grpc::AsyncUnaryCall<global::gRPC.Server.IsWritten> SendFileAsync(global::gRPC.Server.FileBuffer request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return SendFileAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
+      /// <summary>
+      ///на сервер
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="options">The options for the call.</param>
+      /// <returns>The call object.</returns>
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
       public virtual grpc::AsyncUnaryCall<global::gRPC.Server.IsWritten> SendFileAsync(global::gRPC.Server.FileBuffer request, grpc::CallOptions options)
       {
@@ -321,6 +367,46 @@ namespace gRPC.Server {
       public virtual grpc::AsyncUnaryCall<global::gRPC.Server.ClearAll> ClearDirAsync(global::gRPC.Server.HelloRequest request, grpc::CallOptions options)
       {
         return CallInvoker.AsyncUnaryCall(__Method_ClearDir, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::gRPC.Server.EGBuffer TakeEG(global::gRPC.Server.WhatFile request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return TakeEG(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::gRPC.Server.EGBuffer TakeEG(global::gRPC.Server.WhatFile request, grpc::CallOptions options)
+      {
+        return CallInvoker.BlockingUnaryCall(__Method_TakeEG, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::gRPC.Server.EGBuffer> TakeEGAsync(global::gRPC.Server.WhatFile request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return TakeEGAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::gRPC.Server.EGBuffer> TakeEGAsync(global::gRPC.Server.WhatFile request, grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncUnaryCall(__Method_TakeEG, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::gRPC.Server.IsWritten SendEG(global::gRPC.Server.EGBuffer request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return SendEG(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::gRPC.Server.IsWritten SendEG(global::gRPC.Server.EGBuffer request, grpc::CallOptions options)
+      {
+        return CallInvoker.BlockingUnaryCall(__Method_SendEG, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::gRPC.Server.IsWritten> SendEGAsync(global::gRPC.Server.EGBuffer request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return SendEGAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::gRPC.Server.IsWritten> SendEGAsync(global::gRPC.Server.EGBuffer request, grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncUnaryCall(__Method_SendEG, null, options, request);
       }
       /// <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]

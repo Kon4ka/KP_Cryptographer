@@ -23,6 +23,11 @@ message FileBuffer {
   bytes info = 2;
 }
 
+message EGBuffer {
+  string filename = 1;
+  bytes a = 2;
+  bytes b = 3;
+}
 
 message IsWritten {
   bool isWrittenInServer = 1;

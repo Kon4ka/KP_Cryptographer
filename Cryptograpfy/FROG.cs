@@ -11,7 +11,7 @@ namespace KP_Crypt.Cryptograpfy.FROGalg
 
         public static int[] _keySizeRange = new int[] { 5, 125 };
         public static int _sizeToExpand = 2304;
-        private static byte[] _masterKey = new byte[]
+        private static byte[] _masterKey = new byte[]//
         {
             113,  21, 232,  18, 113,  92,  63, 157, 124, 193, 166, 197, 126,  56, 229, 229,
             156, 162,  54,  17, 230,  89, 189,  87, 169,   0,  81, 204,   8,  70, 203, 225,
@@ -276,12 +276,9 @@ namespace KP_Crypt.Cryptograpfy.FROGalg
 
         protected override void KeyGeneration() //Maybe Clear
         {
-            throw new NotImplementedException();
+
         }
     }
 
-    public enum Way
-    {
-        Encrypt, Decrypt
-    }
+
 }

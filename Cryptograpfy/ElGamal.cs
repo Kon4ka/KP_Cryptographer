@@ -6,11 +6,12 @@ using System.Security.Cryptography;
 
 namespace KP_Crypt.Cryptograpfy.EiGamalAlg
 {
-    public class EiGamal : CoderBase
+    public class ElGamal : CoderBase
     {
-        public BigInteger[] myPublicKey = new BigInteger[3];  //p, g, y
+        private BigInteger[] _myPublicKey = new BigInteger[3];  //p, g, y
         private BigInteger _privateKey;
-        public BigInteger[] publicKey = new BigInteger[3];
+        private BigInteger[] _publicKey = new BigInteger[3];
+        private Random random = new Random();
 
         public override byte[] Decrypt(byte[] infoBytes)
         {
@@ -25,12 +26,12 @@ namespace KP_Crypt.Cryptograpfy.EiGamalAlg
                     {
                         BigInteger ai = 0;
                         BigInteger bi = 0;
-                        BigInteger a = BigInteger.Parse(strA[i]);
-                        BigInteger b = BigInteger.Parse(strA[i + 1]);
+                        BigInteger a = BigInteger.Parse(strA[i]);//tryParse
+                        BigInteger b = BigInteger.Parse(strA[i + 1]);//GetBytes
                         if ((a != 0) && (b != 0))
                         {
                             //BigInteger deM = mul(bi, power(ai, p - 1 - x, p), p);// m=b*(a^x)^(-1)mod p =b*a^(p-1-x)mod p - трудно было  найти нормальную формулу, в ней вся загвоздка
-                            BigInteger deM = MultMOD(b, FastPow(a, myPublicKey[0] - 1 - _privateKey, myPublicKey[0]), myPublicKey[0]);
+                            BigInteger deM = MultMOD(b, FastPow(a, _myPublicKey[0] - 1 - _privateKey, _myPublicKey[0]), _myPublicKey[0]);
                             //char m = (char)deM;
                             output += ((char)deM).ToString();
                         }
@@ -40,7 +41,6 @@ namespace KP_Crypt.Cryptograpfy.EiGamalAlg
             }
             return null;
         }
-
 
         private string Encrypting(string infoStr)
         {
@@ -55,9 +55,9 @@ namespace KP_Crypt.Cryptograpfy.EiGamalAlg
                     BigInteger m = new BigInteger(temp[i]);
                     if (m > 0) 
                     {
-                        BigInteger k = Rand() % (publicKey[0] - 2) + 1; // 1 < k < (p-1)
-                        BigInteger a = FastPow(publicKey[1], k, publicKey[0]);
-                        BigInteger b = MultMOD(FastPow(publicKey[2], k, publicKey[0]), m, publicKey[0]);
+                        BigInteger k = Rand() % (_publicKey[0] - 2) + 1; // 1 < k < (p-1)
+                        BigInteger a = FastPow(_publicKey[1], k, _publicKey[0]);
+                        BigInteger b = MultMOD(FastPow(_publicKey[2], k, _publicKey[0]), m, _publicKey[0]);
                         res += a + " " + b + " ";
 
                     }
@@ -69,9 +69,9 @@ namespace KP_Crypt.Cryptograpfy.EiGamalAlg
 
         public byte[] EncryptWithOthersKey(byte[] infoBytes, BigInteger[] key)
         {
-            publicKey[0] = key[0];
-            publicKey[1] = key[1];
-            publicKey[2] = key[2];
+            _publicKey[0] = key[0];
+            _publicKey[1] = key[1];
+            _publicKey[2] = key[2];
             string infoStr = Encoding.Default.GetString(infoBytes);
 
             return Encoding.Default.GetBytes(Encrypting(infoStr));
@@ -79,7 +79,7 @@ namespace KP_Crypt.Cryptograpfy.EiGamalAlg
 
         public override byte[] Encrypt(byte[] infoBytes)
         {
-            if (publicKey[0] == 0)
+            if (_publicKey[0] == 0)
             {
                 return null;
             }
@@ -93,23 +93,23 @@ namespace KP_Crypt.Cryptograpfy.EiGamalAlg
             throw new ArgumentException();
         }
 
-        public void KeyGenerate()
+        public void KeyGenerate()//collect
         {
-            SimplePrime primes = new SimplePrime(PrimeTestMode.SoloveyShtrasen, 0.98, 64);
+            SimplePrime primes = new SimplePrime(PrimeTestMode.SoloveyShtrasen, 0.98, 64);//upper
             BigInteger curKey;
             //Random r = new Random();
             RandomNumberGenerator rnd = RandomNumberGenerator.Create();
 
             // P
             curKey = primes.GeneratePrimeDigit();
-            myPublicKey[0] = curKey;
+            _myPublicKey[0] = curKey;
 
             //G
-            myPublicKey[1] = SimplePrime.RandomInRange(rnd, 1, myPublicKey[0] - 1);
+            _myPublicKey[1] = SimplePrime.RandomInRange(rnd, 1, _myPublicKey[0] - 1);
             //X
-            _privateKey = SimplePrime.RandomInRange(rnd, 1, myPublicKey[0] - 2);
+            _privateKey = SimplePrime.RandomInRange(rnd, 1, _myPublicKey[0] - 2);
             //Y
-            myPublicKey[2] = FastPow(myPublicKey[1], _privateKey, myPublicKey[0]);
+            _myPublicKey[2] = FastPow(_myPublicKey[1], _privateKey, _myPublicKey[0]);
         }
 
         BigInteger MultMOD(BigInteger a, BigInteger b, BigInteger mod)
@@ -151,22 +151,35 @@ namespace KP_Crypt.Cryptograpfy.EiGamalAlg
             }
         }
 
-        BigInteger Mult(BigInteger a, BigInteger b, BigInteger n) // a*b mod n - умножение a на b по модулю n
+        public void SetMyPublicKey(BigInteger p, BigInteger g, BigInteger y)
         {
-            BigInteger sum = 0;
-            for (BigInteger i = 0; i < b; i++)
-            {
-                sum += a;
-                if (sum >= n)
-                {
-                    sum -= n;
-                }
-            }
-            return sum;
+            _myPublicKey[0] = p;
+            _myPublicKey[1] = g;
+            _myPublicKey[2] = y;
+        }
+
+        public void SetOtherPublicKey(BigInteger p, BigInteger g, BigInteger y)
+        {
+            _publicKey[0] = p;
+            _publicKey[1] = g;
+            _publicKey[2] = y;
+        }
+
+        public ulong[] GetMyPublicKey()
+        {
+            ulong[] tmp = new ulong[3];
+
+            tmp[0] = (ulong)_myPublicKey[0];
+            tmp[1] = (ulong)_myPublicKey[1];
+            tmp[2] = (ulong)_myPublicKey[2];
+            return tmp;
+        }
+        public BigInteger[] GetOtherPublicKey()
+        {
+            return _publicKey;
         }
         private BigInteger Rand()//Ф-я получения случайного числа
         {
-            Random random = new Random();
             return random.Next();
         }
     }

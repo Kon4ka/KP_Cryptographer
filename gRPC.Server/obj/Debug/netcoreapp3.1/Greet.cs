@@ -25,25 +25,29 @@ namespace gRPC.Server {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "CgtncmVldC5wcm90bxIFZ3JlZXQiLAoKRmlsZUJ1ZmZlchIQCghmaWxlbmFt",
-            "ZRgBIAEoCRIMCgRpbmZvGAIgASgMIiYKCUlzV3JpdHRlbhIZChFpc1dyaXR0",
-            "ZW5JblNlcnZlchgBIAEoCCIcCghXaGF0RmlsZRIQCghmaWxlbmFtZRgBIAEo",
-            "CSIZCghVc2VyTGlzdBINCgV1c2VycxgBIAEoCSIZCghGaWxlTGlzdBINCgVm",
-            "aWxlcxgBIAEoCSIbCghDbGVhckFsbBIPCgdpc0NsZWFyGAEgASgIIhwKDEhl",
-            "bGxvUmVxdWVzdBIMCgRuYW1lGAEgASgJIh0KCkhlbGxvUmVwbHkSDwoHbWVz",
-            "c2FnZRgBIAEoCTL3AgoNQ3J5cHRvX1NlcnZlchIyCghTYXlIZWxsbxITLmdy",
-            "ZWV0LkhlbGxvUmVxdWVzdBoRLmdyZWV0LkhlbGxvUmVwbHkSMAoGU2F5Qnll",
-            "EhMuZ3JlZXQuSGVsbG9SZXF1ZXN0GhEuZ3JlZXQuSGVsbG9SZXBseRIvCghT",
-            "ZW5kRmlsZRIRLmdyZWV0LkZpbGVCdWZmZXIaEC5ncmVldC5Jc1dyaXR0ZW4S",
-            "LgoIVGFrZUZpbGUSDy5ncmVldC5XaGF0RmlsZRoRLmdyZWV0LkZpbGVCdWZm",
-            "ZXISMwoLV2hvQXRTZXJ2ZXISEy5ncmVldC5IZWxsb1JlcXVlc3QaDy5ncmVl",
-            "dC5Vc2VyTGlzdBI4ChBUYWtlQWxsRmlsZU5hbWVzEhMuZ3JlZXQuSGVsbG9S",
-            "ZXF1ZXN0Gg8uZ3JlZXQuRmlsZUxpc3QSMAoIQ2xlYXJEaXISEy5ncmVldC5I",
-            "ZWxsb1JlcXVlc3QaDy5ncmVldC5DbGVhckFsbEIOqgILZ1JQQy5TZXJ2ZXJi",
-            "BnByb3RvMw=="));
+            "ZRgBIAEoCRIMCgRpbmZvGAIgASgMIjIKCEVHQnVmZmVyEhAKCGZpbGVuYW1l",
+            "GAEgASgJEgkKAWEYAiABKAwSCQoBYhgDIAEoDCImCglJc1dyaXR0ZW4SGQoR",
+            "aXNXcml0dGVuSW5TZXJ2ZXIYASABKAgiHAoIV2hhdEZpbGUSEAoIZmlsZW5h",
+            "bWUYASABKAkiGQoIVXNlckxpc3QSDQoFdXNlcnMYASABKAkiGQoIRmlsZUxp",
+            "c3QSDQoFZmlsZXMYASABKAkiGwoIQ2xlYXJBbGwSDwoHaXNDbGVhchgBIAEo",
+            "CCIcCgxIZWxsb1JlcXVlc3QSDAoEbmFtZRgBIAEoCSIdCgpIZWxsb1JlcGx5",
+            "Eg8KB21lc3NhZ2UYASABKAky0AMKDUNyeXB0b19TZXJ2ZXISMgoIU2F5SGVs",
+            "bG8SEy5ncmVldC5IZWxsb1JlcXVlc3QaES5ncmVldC5IZWxsb1JlcGx5EjAK",
+            "BlNheUJ5ZRITLmdyZWV0LkhlbGxvUmVxdWVzdBoRLmdyZWV0LkhlbGxvUmVw",
+            "bHkSLwoIU2VuZEZpbGUSES5ncmVldC5GaWxlQnVmZmVyGhAuZ3JlZXQuSXNX",
+            "cml0dGVuEi4KCFRha2VGaWxlEg8uZ3JlZXQuV2hhdEZpbGUaES5ncmVldC5G",
+            "aWxlQnVmZmVyEjMKC1dob0F0U2VydmVyEhMuZ3JlZXQuSGVsbG9SZXF1ZXN0",
+            "Gg8uZ3JlZXQuVXNlckxpc3QSOAoQVGFrZUFsbEZpbGVOYW1lcxITLmdyZWV0",
+            "LkhlbGxvUmVxdWVzdBoPLmdyZWV0LkZpbGVMaXN0EjAKCENsZWFyRGlyEhMu",
+            "Z3JlZXQuSGVsbG9SZXF1ZXN0Gg8uZ3JlZXQuQ2xlYXJBbGwSKgoGVGFrZUVH",
+            "Eg8uZ3JlZXQuV2hhdEZpbGUaDy5ncmVldC5FR0J1ZmZlchIrCgZTZW5kRUcS",
+            "Dy5ncmVldC5FR0J1ZmZlchoQLmdyZWV0LklzV3JpdHRlbkIOqgILZ1JQQy5T",
+            "ZXJ2ZXJiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::gRPC.Server.FileBuffer), global::gRPC.Server.FileBuffer.Parser, new[]{ "Filename", "Info" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::gRPC.Server.EGBuffer), global::gRPC.Server.EGBuffer.Parser, new[]{ "Filename", "A", "B" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::gRPC.Server.IsWritten), global::gRPC.Server.IsWritten.Parser, new[]{ "IsWrittenInServer" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::gRPC.Server.WhatFile), global::gRPC.Server.WhatFile.Parser, new[]{ "Filename" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::gRPC.Server.UserList), global::gRPC.Server.UserList.Parser, new[]{ "Users" }, null, null, null, null),
@@ -214,6 +218,191 @@ namespace gRPC.Server {
 
   }
 
+  public sealed partial class EGBuffer : pb::IMessage<EGBuffer> {
+    private static readonly pb::MessageParser<EGBuffer> _parser = new pb::MessageParser<EGBuffer>(() => new EGBuffer());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<EGBuffer> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::gRPC.Server.GreetReflection.Descriptor.MessageTypes[1]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public EGBuffer() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public EGBuffer(EGBuffer other) : this() {
+      filename_ = other.filename_;
+      a_ = other.a_;
+      b_ = other.b_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public EGBuffer Clone() {
+      return new EGBuffer(this);
+    }
+
+    /// <summary>Field number for the "filename" field.</summary>
+    public const int FilenameFieldNumber = 1;
+    private string filename_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Filename {
+      get { return filename_; }
+      set {
+        filename_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "a" field.</summary>
+    public const int AFieldNumber = 2;
+    private pb::ByteString a_ = pb::ByteString.Empty;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pb::ByteString A {
+      get { return a_; }
+      set {
+        a_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "b" field.</summary>
+    public const int BFieldNumber = 3;
+    private pb::ByteString b_ = pb::ByteString.Empty;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pb::ByteString B {
+      get { return b_; }
+      set {
+        b_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as EGBuffer);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(EGBuffer other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Filename != other.Filename) return false;
+      if (A != other.A) return false;
+      if (B != other.B) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Filename.Length != 0) hash ^= Filename.GetHashCode();
+      if (A.Length != 0) hash ^= A.GetHashCode();
+      if (B.Length != 0) hash ^= B.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Filename.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Filename);
+      }
+      if (A.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteBytes(A);
+      }
+      if (B.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteBytes(B);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Filename.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Filename);
+      }
+      if (A.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeBytesSize(A);
+      }
+      if (B.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeBytesSize(B);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(EGBuffer other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Filename.Length != 0) {
+        Filename = other.Filename;
+      }
+      if (other.A.Length != 0) {
+        A = other.A;
+      }
+      if (other.B.Length != 0) {
+        B = other.B;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            Filename = input.ReadString();
+            break;
+          }
+          case 18: {
+            A = input.ReadBytes();
+            break;
+          }
+          case 26: {
+            B = input.ReadBytes();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
   public sealed partial class IsWritten : pb::IMessage<IsWritten> {
     private static readonly pb::MessageParser<IsWritten> _parser = new pb::MessageParser<IsWritten>(() => new IsWritten());
     private pb::UnknownFieldSet _unknownFields;
@@ -222,7 +411,7 @@ namespace gRPC.Server {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::gRPC.Server.GreetReflection.Descriptor.MessageTypes[1]; }
+      get { return global::gRPC.Server.GreetReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -351,7 +540,7 @@ namespace gRPC.Server {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::gRPC.Server.GreetReflection.Descriptor.MessageTypes[2]; }
+      get { return global::gRPC.Server.GreetReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -480,7 +669,7 @@ namespace gRPC.Server {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::gRPC.Server.GreetReflection.Descriptor.MessageTypes[3]; }
+      get { return global::gRPC.Server.GreetReflection.Descriptor.MessageTypes[4]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -609,7 +798,7 @@ namespace gRPC.Server {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::gRPC.Server.GreetReflection.Descriptor.MessageTypes[4]; }
+      get { return global::gRPC.Server.GreetReflection.Descriptor.MessageTypes[5]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -738,7 +927,7 @@ namespace gRPC.Server {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::gRPC.Server.GreetReflection.Descriptor.MessageTypes[5]; }
+      get { return global::gRPC.Server.GreetReflection.Descriptor.MessageTypes[6]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -870,7 +1059,7 @@ namespace gRPC.Server {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::gRPC.Server.GreetReflection.Descriptor.MessageTypes[6]; }
+      get { return global::gRPC.Server.GreetReflection.Descriptor.MessageTypes[7]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1002,7 +1191,7 @@ namespace gRPC.Server {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::gRPC.Server.GreetReflection.Descriptor.MessageTypes[7]; }
+      get { return global::gRPC.Server.GreetReflection.Descriptor.MessageTypes[8]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

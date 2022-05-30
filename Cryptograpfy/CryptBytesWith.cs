@@ -8,7 +8,11 @@ namespace KP_Crypt.Cryptograpfy	//Todo
 {
 	public static class CryptByteArrayWith
     {
-		public static byte[] CryptByteArray(byte[] infoToCrypt, CoderBase coder)
+		public delegate void PrograssInBarCBW(long i, int len, int step);
+
+        public static event PrograssInBarCBW onCount;
+
+        public static byte[] CryptByteArray(byte[] infoToCrypt, CoderBase coder)
 		{
 			if (coder is null)	//если неизвестно, чем расшифровывать
 			{
@@ -35,6 +39,7 @@ namespace KP_Crypt.Cryptograpfy	//Todo
 				InputInfo[InputInfo.Length - i - 1] = Convert.ToByte(addBytesCount);    // Паддинг PKCS7 (1) - del
 			}
 
+
 			for (long i = 0; i < InputInfo.Length; i += cryptPartSize)	// Шагаем по блокам
 			{
 				byte[] currentPart = new byte[cryptPartSize];
@@ -42,7 +47,7 @@ namespace KP_Crypt.Cryptograpfy	//Todo
 				{
 					currentPart[j] = InputInfo[i + j];		//Заполняем текущий блок
 				}
-
+				onCount(i, InputInfo.Length, cryptPartSize);
 				byte[] cryptBytes = coder.Encrypt(currentPart);	// Шифруем блок
 
 				for (int j = 0; j < cryptPartSize; j++)
@@ -76,7 +81,7 @@ namespace KP_Crypt.Cryptograpfy	//Todo
 				{
 					currentPart[j] = infoToDecrypt[m + j];
 				}
-
+				onCount(m, infoToDecrypt.Length, cryptPartSize);
 				byte[] cryptBytes = coder.Decrypt(currentPart);
 
 				for (int j = 0; j < cryptPartSize && (m + j) < outputInfoWithPadd.Length; j++)

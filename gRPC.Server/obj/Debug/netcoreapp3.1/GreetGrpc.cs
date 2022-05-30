@@ -23,6 +23,7 @@ namespace gRPC.Server {
     static readonly grpc::Marshaller<global::gRPC.Server.UserList> __Marshaller_greet_UserList = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::gRPC.Server.UserList.Parser.ParseFrom);
     static readonly grpc::Marshaller<global::gRPC.Server.FileList> __Marshaller_greet_FileList = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::gRPC.Server.FileList.Parser.ParseFrom);
     static readonly grpc::Marshaller<global::gRPC.Server.ClearAll> __Marshaller_greet_ClearAll = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::gRPC.Server.ClearAll.Parser.ParseFrom);
+    static readonly grpc::Marshaller<global::gRPC.Server.EGBuffer> __Marshaller_greet_EGBuffer = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::gRPC.Server.EGBuffer.Parser.ParseFrom);
 
     static readonly grpc::Method<global::gRPC.Server.HelloRequest, global::gRPC.Server.HelloReply> __Method_SayHello = new grpc::Method<global::gRPC.Server.HelloRequest, global::gRPC.Server.HelloReply>(
         grpc::MethodType.Unary,
@@ -73,6 +74,20 @@ namespace gRPC.Server {
         __Marshaller_greet_HelloRequest,
         __Marshaller_greet_ClearAll);
 
+    static readonly grpc::Method<global::gRPC.Server.WhatFile, global::gRPC.Server.EGBuffer> __Method_TakeEG = new grpc::Method<global::gRPC.Server.WhatFile, global::gRPC.Server.EGBuffer>(
+        grpc::MethodType.Unary,
+        __ServiceName,
+        "TakeEG",
+        __Marshaller_greet_WhatFile,
+        __Marshaller_greet_EGBuffer);
+
+    static readonly grpc::Method<global::gRPC.Server.EGBuffer, global::gRPC.Server.IsWritten> __Method_SendEG = new grpc::Method<global::gRPC.Server.EGBuffer, global::gRPC.Server.IsWritten>(
+        grpc::MethodType.Unary,
+        __ServiceName,
+        "SendEG",
+        __Marshaller_greet_EGBuffer,
+        __Marshaller_greet_IsWritten);
+
     /// <summary>Service descriptor</summary>
     public static global::Google.Protobuf.Reflection.ServiceDescriptor Descriptor
     {
@@ -99,6 +114,12 @@ namespace gRPC.Server {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
       }
 
+      /// <summary>
+      ///на сервер
+      /// </summary>
+      /// <param name="request">The request received from the client.</param>
+      /// <param name="context">The context of the server-side call handler being invoked.</param>
+      /// <returns>The response to send back to the client (wrapped by a task).</returns>
       public virtual global::System.Threading.Tasks.Task<global::gRPC.Server.IsWritten> SendFile(global::gRPC.Server.FileBuffer request, grpc::ServerCallContext context)
       {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
@@ -124,6 +145,16 @@ namespace gRPC.Server {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
       }
 
+      public virtual global::System.Threading.Tasks.Task<global::gRPC.Server.EGBuffer> TakeEG(global::gRPC.Server.WhatFile request, grpc::ServerCallContext context)
+      {
+        throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
+      }
+
+      public virtual global::System.Threading.Tasks.Task<global::gRPC.Server.IsWritten> SendEG(global::gRPC.Server.EGBuffer request, grpc::ServerCallContext context)
+      {
+        throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
+      }
+
     }
 
     /// <summary>Creates service definition that can be registered with a server</summary>
@@ -137,7 +168,9 @@ namespace gRPC.Server {
           .AddMethod(__Method_TakeFile, serviceImpl.TakeFile)
           .AddMethod(__Method_WhoAtServer, serviceImpl.WhoAtServer)
           .AddMethod(__Method_TakeAllFileNames, serviceImpl.TakeAllFileNames)
-          .AddMethod(__Method_ClearDir, serviceImpl.ClearDir).Build();
+          .AddMethod(__Method_ClearDir, serviceImpl.ClearDir)
+          .AddMethod(__Method_TakeEG, serviceImpl.TakeEG)
+          .AddMethod(__Method_SendEG, serviceImpl.SendEG).Build();
     }
 
     /// <summary>Register service method with a service binder with or without implementation. Useful when customizing the  service binding logic.
@@ -153,6 +186,8 @@ namespace gRPC.Server {
       serviceBinder.AddMethod(__Method_WhoAtServer, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::gRPC.Server.HelloRequest, global::gRPC.Server.UserList>(serviceImpl.WhoAtServer));
       serviceBinder.AddMethod(__Method_TakeAllFileNames, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::gRPC.Server.HelloRequest, global::gRPC.Server.FileList>(serviceImpl.TakeAllFileNames));
       serviceBinder.AddMethod(__Method_ClearDir, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::gRPC.Server.HelloRequest, global::gRPC.Server.ClearAll>(serviceImpl.ClearDir));
+      serviceBinder.AddMethod(__Method_TakeEG, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::gRPC.Server.WhatFile, global::gRPC.Server.EGBuffer>(serviceImpl.TakeEG));
+      serviceBinder.AddMethod(__Method_SendEG, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::gRPC.Server.EGBuffer, global::gRPC.Server.IsWritten>(serviceImpl.SendEG));
     }
 
   }

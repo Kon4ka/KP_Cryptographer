@@ -9,13 +9,6 @@ using System.Security.Cryptography;
 
 namespace KP_Crypt.Cryptograpfy.Prime
 { 
-    public enum PrimeTestMode
-    {
-        Ferm,
-        MillerRabin,
-        SoloveyShtrasen
-
-    };
     public class SimplePrime
     {
 

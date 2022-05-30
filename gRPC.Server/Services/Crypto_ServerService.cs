@@ -13,7 +13,8 @@ namespace gRPC.Server
     public class Crypto_ServerService : Crypto_Server.Crypto_ServerBase
     {
         private readonly ILogger<Crypto_ServerService> _logger;
-        private readonly List<string> _users = new List<string>();   
+        private readonly List<string> _users = new List<string>();
+        private readonly Dictionary<string, byte[][]> _egKeys= new Dictionary<string, byte[]>();
         private string _defaultPath = "/UserFiles/";
         public Crypto_ServerService(ILogger<Crypto_ServerService> logger)
         {
@@ -176,8 +177,7 @@ namespace gRPC.Server
                 StringBuilder allfilenames_str = new StringBuilder();
                 foreach (var file in allfiles)
                 {
-                    allfilenames_str.Append(Path.GetFileNameWithoutExtension(file));
-                    allfilenames_str.Append(",");
+                    allfilenames_str.Append(Path.GetFileNameWithoutExtension(file)).Append(",");
                 }
                 return Task.FromResult(new FileList
                 {
@@ -191,5 +191,51 @@ namespace gRPC.Server
             }
         }
 
+        public override Task<IsWritten> SendEG(EGBuffer request, ServerCallContext context)
+        {
+            try
+            {
+                string fromWho = request.Filename;
+                byte[][] aAndB = new byte[][] { request.A.ToByteArray(), request.B.ToByteArray() };
+
+                _egKeys[fromWho] = aAndB;
+
+            }
+            catch 
+            {
+                return Task.FromResult(new IsWritten
+                {
+                    IsWrittenInServer = false
+                });
+            }
+            return Task.FromResult(new IsWritten
+            {
+                IsWrittenInServer = true
+            });
+
         }
+
+        public override Task<EGBuffer> TakeEG(WhatFile request, ServerCallContext context)
+        {
+            try
+            {
+                return Task.FromResult(new EGBuffer
+                {
+                    Filename = request.Filename,
+                    A = ByteString.CopyFrom(_egKeys[request.Filename][0]),
+                    B = ByteString.CopyFrom(_egKeys[request.Filename][1]),
+                });
+            }
+            catch
+            {
+                return Task.FromResult(new EGBuffer
+                {
+                    Filename = ""
+                });
+            }
+
+
+        }
+
+    }
     }
