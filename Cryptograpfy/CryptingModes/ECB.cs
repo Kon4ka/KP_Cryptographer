@@ -11,10 +11,6 @@ namespace KP_Crypt.Cryptograpfy.CryptModes
     {
         private CoderBase _coder;
 
-        public delegate void PrograssInBarCBW(long i, int InputInfoL, int cryptPartSize);
-
-        public static event PrograssInBarCBW onCount;
-
         public ECB(CoderBase coder)
         {
             _chipherPartSize = coder.GetCryptPartSize();
@@ -53,16 +49,11 @@ namespace KP_Crypt.Cryptograpfy.CryptModes
 
             var resultall = new List<byte[]>(blocksCount);
             for (int i = 0; i < blocksCount; i++)
-            {
                 resultall.Add(new byte[_chipherPartSize]);
-                onCount(i, inputBytes.Length, _chipherPartSize);
-            }
             
 
             Parallel.For(0, blocksCount,
-                i => {
-                    resultall[i] = _coder.Encrypt(inputBytes, result, i * 1 * _chipherPartSize, 1);
-                     });
+                i => resultall[i] = _coder.Encrypt(inputBytes, result, i * 1 * _chipherPartSize, 1));
 
             return resultall.SelectMany(s => s).ToArray();
         }

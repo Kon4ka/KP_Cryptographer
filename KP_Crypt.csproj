@@ -102,7 +102,7 @@
     <Compile Include="Cryptograpfy\CryptingModes\ECB.cs" />
     <Compile Include="Cryptograpfy\CryptingModes\OFB.cs" />
     <Compile Include="Cryptograpfy\CryptographyEngine.cs" />
-    <Compile Include="Cryptograpfy\ElGamal.cs" />
+    <Compile Include="Cryptograpfy\EiGamal.cs" />
     <Compile Include="Cryptograpfy\FROG.cs" />
     <Compile Include="Cryptograpfy\SimpleTests\FermaTest.cs" />
     <Compile Include="Cryptograpfy\SimpleTests\LegandrYakobiService.cs" />
@@ -110,7 +110,6 @@
     <Compile Include="Cryptograpfy\SimpleTests\PrimeTestsBase.cs" />
     <Compile Include="Cryptograpfy\SimpleTests\SimplePrime.cs" />
     <Compile Include="Cryptograpfy\SimpleTests\SoloveyShtrassenTest.cs" />
-    <Compile Include="Cryptograpfy\Way, CryptModesEn, PrimeTestMode.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -34,147 +34,89 @@ namespace KP_Crypt.Client_Serviece
         {
             _channel.Dispose();
         }
-        public async Task<string[]> FirstRegistrationAsync(string name, CancellationTokenSource token) // try //to constructor/ lazy 
+        public async Task<string[]> FirstRegistrationAsync(string name, CancellationToken token) // try //to constructor/ lazy 
         {
-            try
-            {
-                _myName = name;
+            _myName = name;
 
-                var response = await _client.SayHelloAsync(new HelloRequest { Name = _myName });// token
-                return await IsAnyoneAtServerAsync(token);
-            }
-            catch
-            {
-                throw new InvalidDataException();
-            }
+            var response = await _client.SayHelloAsync(new HelloRequest { Name = _myName });// token
+            return await IsAnyoneAtServerAsync(token);
         }
 
-        public async Task<string[]> IsAnyoneAtServerAsync(CancellationTokenSource token)
+        public async Task<string[]> IsAnyoneAtServerAsync(CancellationToken token)
         {
-            try
-            {
-                var others = (await _client.WhoAtServerAsync(new HelloRequest { Name = _myName })).Users.Split(',');
-                others = others.Take(others.Length - 1).ToArray();
-                return others;
-            }
-            catch
-            {
-                throw new InvalidDataException();
-            }
+            var others = (await _client.WhoAtServerAsync(new HelloRequest { Name = _myName })).Users.Split(',');
+            others = others.Take(others.Length - 1).ToArray();
+            return others;
         }
 
 
-        public async Task<int> CleanDefaultDirAsync(CancellationTokenSource token)
+        public async Task<int> CleanDefaultDirAsync(CancellationToken token)
         {
-            try
-            {
-                var clearing = await _client.ClearDirAsync(new HelloRequest { Name = _myName });
-                if (clearing.IsClear == false)
-                    return -1;
-                else return 0;
-            }
-            catch
-            {
-                throw new IOException();
-            }
+            var clearing = await _client.ClearDirAsync(new HelloRequest { Name = _myName });
+            if (clearing.IsClear == false)
+                return -1;
+            else return 0;
         }
 
-        public async Task<int> SendEGKeyAsync(ulong[] keys, CancellationTokenSource token)
+        public async Task<int> SendEGKeyAsync(ulong[] keys, CancellationToken token)
         {
-            try
+            //Создание первичного EG ключа
+            string keyToSend = "";
+            keyToSend = keys[0] + "," + keys[1] + ","+ keys[2] ;
+
+            var sendEGKey = await _client.SendFileAsync(new FileBuffer
             {
-                //Создание первичного EG ключа
-                string keyToSend = "";
-                keyToSend = keys[0] + "," + keys[1] + "," + keys[2];
-
-                var sendEGKey = await _client.SendFileAsync(new FileBuffer
-                {
-                    Filename = $"{_myName}.EGKey",
-                    Info = ByteString.CopyFrom(Encoding.Default.GetBytes(keyToSend))
-                });
-                if (sendEGKey.IsWrittenInServer != true)
-                    return -1;
-
-                else return 0;
-
-            }
-            catch
-            {
-                throw new InvalidDataException();
-            }
+                Filename = $"{_myName}.EGKey",
+                Info = ByteString.CopyFrom(Encoding.Default.GetBytes(keyToSend))
+            });
+            if (sendEGKey.IsWrittenInServer != true)
+                return -1;
+            else return 0;
         }
 
-        public async Task<int> SendFROGKeyAsync(byte[] toSend, CancellationTokenSource token)        
+        public async Task<int> SendFROGKeyAsync(byte[] toSend, CancellationToken token)        
         {
-            try
+            var sendFROGKey = await _client.SendFileAsync(new FileBuffer
             {
-                var sendFROGKey = await _client.SendFileAsync(new FileBuffer
-                {
-                    Filename = $"{_myName}.FROGKey",
-                    Info = ByteString.CopyFrom(toSend)
-                });
-                if (sendFROGKey.IsWrittenInServer != true)
-                    return -1;
-                else return 0;
-            }
-            catch
-            {
-                throw new InvalidDataException();
-            }
+                Filename = $"{_myName}.FROGKey",
+                Info = ByteString.CopyFrom(toSend)
+            });
+            if (sendFROGKey.IsWrittenInServer != true)
+                return -1;
+            else return 0;
         }
 
-        public async Task<byte[]> TakeEGKeyAsync(string another, CancellationTokenSource token)
+        public async Task<byte[]> TakeEGKeyAsync(string another, CancellationToken token)
         {
-            try
+            _name_of_another = another;
+            var takeEGKey = await _client.TakeFileAsync(new WhatFile { Filename = $"{_name_of_another}.EGKey" });
+            if (takeEGKey.Filename == "")
+                return null;
+            else
             {
-                _name_of_another = another;
-                var takeEGKey = await _client.TakeFileAsync(new WhatFile { Filename = $"{_name_of_another}.EGKey" });
-                if (takeEGKey.Filename == "")
-                    return null;
-                else
-                {
-                    return takeEGKey.Info.ToByteArray();
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
+                return takeEGKey.Info.ToByteArray();
             }
         }
-        public async Task<byte[]> TakeFROGKeyAsync(string another, CancellationTokenSource token)
+        public async Task<byte[]> TakeFROGKeyAsync(string another, CancellationToken token)
         {
-            try
+            _name_of_another = another;
+            var takeFROGKey = await _client.TakeFileAsync(new WhatFile { Filename = $"{_name_of_another}.FROGKey" });
+            if (takeFROGKey.Filename == "")
+                return null;
+            else
             {
-                _name_of_another = another;
-                var takeFROGKey = await _client.TakeFileAsync(new WhatFile { Filename = $"{_name_of_another}.FROGKey" });
-                if (takeFROGKey.Filename == "")
-                    return null;
-                else
-                {
-                    return takeFROGKey.Info.ToByteArray();
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
+                return takeFROGKey.Info.ToByteArray();
             }
 
         }
-        public async Task<byte[]> TakeFileAsync(string name, CancellationTokenSource token)
+        public async Task<byte[]> TakeFileAsync(string name, CancellationToken token)
         {
-            try
-            {
-                var takeFile = await _client.TakeFileAsync(new WhatFile { Filename = name });
-                if (takeFile.Filename == "" || String.IsNullOrEmpty(name))
-                    return null;
-                else
-                {
-                    return takeFile.Info.ToByteArray();
-                }
-            }
-            catch(Exception ex)
-            {
-                throw ex;
+            var takeFile = await _client.TakeFileAsync(new WhatFile { Filename = name });
+            if (takeFile.Filename == "" || name == null || name == "")    
+                return null;
+            else 
+            { 
+                return takeFile.Info.ToByteArray();  //Do state enum
             }
         }
 

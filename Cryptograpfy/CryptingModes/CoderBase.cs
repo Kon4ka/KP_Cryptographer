@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace KP_Crypt.Cryptograpfy
 {
+    public enum CryptModesEn
+    {
+        ECB, CBC, CFB, OFB, CTR, RD, RDH
+    }
     public abstract class CoderBase
     {
         protected int _chipherPartSize = 8;

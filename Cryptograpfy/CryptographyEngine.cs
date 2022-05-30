@@ -14,13 +14,9 @@ namespace KP_Crypt.Cryptograpfy
     {
         private static CryptographyEngine engine = null; //singltone 
         public FROG frog = null;
-		public ElGamal elgamal = null;
+		public EiGamal eigamal = null;
 
-		public delegate void PrograssInBarCE(long i, int InputInfoL, int cryptPartSize);
-
-		public static event PrograssInBarCE upper;
-
-		public string frogKeyString = "";
+        public string frogKeyString = "";
 		public string frogIVectorString = "";
 
 		private ECB frogECB = null;
@@ -31,10 +27,8 @@ namespace KP_Crypt.Cryptograpfy
 
 		private CryptographyEngine()
         {
-			CryptByteArrayWith.onCount += PrograssInBarCBW;
-			ECB.onCount += PrograssInBarCBW;
-			elgamal = new ElGamal();
-			elgamal.KeyGenerate();
+			eigamal = new EiGamal();
+			eigamal.KeyGenerate();
         }
 
 		public static CryptographyEngine GetCryptographyEngine()
@@ -54,7 +48,7 @@ namespace KP_Crypt.Cryptograpfy
 			}
 			catch
             {
-				///
+
             }
 			frogECB = new ECB(frog);
 			frogCBC = new CBC(frog, frogIV); 
@@ -97,25 +91,19 @@ namespace KP_Crypt.Cryptograpfy
 				frogKeyString = Encoding.Default.GetString(frogKey) + " => ";
 				frogIVectorString = Encoding.Default.GetString(frogIV);
 			}
-			while (frogKeyString.Contains("\n") || frogKeyString.Contains("\r") ||
-			frogKeyString.Contains("\0") || frogIVectorString.Contains("\0"));
+			while (frogKeyString.Contains("\n") || frogKeyString.Contains("\r") || frogKeyString.Contains("\0") || frogIVectorString.Contains("\0"));
 
 			return result;
 		}
 
 		public byte[] CryptWithEiGamal(byte[] inputBytes)
 		{
-			return elgamal.Encrypt(inputBytes);
+			return eigamal.Encrypt(inputBytes);
 		}
 		public byte[] UnCryptWithEiGamal(byte[] inputBytes)
 		{
-			return elgamal.Decrypt(inputBytes);
+			return eigamal.Decrypt(inputBytes);
 		}
-
-		public void PrograssInBarCBW(long i, int InputInfoL, int cryptPartSize)
-        {
-			upper(i, InputInfoL, cryptPartSize);
-        }
 
 		public async Task<byte[]> CryptWithFROGAsync(byte[] inputBytes, CryptModesEn cryptmode)
 		{
@@ -126,7 +114,7 @@ namespace KP_Crypt.Cryptograpfy
 				case CryptModesEn.CFB: return CryptByteArrayWith.CryptByteArray(inputBytes, frogCFB);
 				case CryptModesEn.OFB: return CryptByteArrayWith.CryptByteArray(inputBytes, frogOFB);
 				case CryptModesEn.CTR: return CryptByteArrayWith.CryptByteArray(inputBytes, frogCTR);
-				default: return CryptByteArrayWith.CryptByteArray(inputBytes, frogOFB);
+				default: return await CryptByteWithArrayAsync.CryptByteArrayAsync(inputBytes, frogECB);
 			}
 		}
 		public async Task<byte[]> UnCryptWithFROGAsync(byte[] inputBytes, CryptModesEn cryptmode)
@@ -138,22 +126,25 @@ namespace KP_Crypt.Cryptograpfy
 				case CryptModesEn.CFB: return CryptByteArrayWith.UnCryptByteArray(inputBytes, frogCFB);
 				case CryptModesEn.OFB: return CryptByteArrayWith.UnCryptByteArray(inputBytes, frogOFB);
 				case CryptModesEn.CTR: return CryptByteArrayWith.UnCryptByteArray(inputBytes, frogCTR);
-				default: return CryptByteArrayWith.UnCryptByteArray(inputBytes, frogOFB);
+				default: return await CryptByteWithArrayAsync.UnCryptByteArrayAsync(inputBytes, frogECB);
 			}
 		}
 
 		public void SetEGKeys(long[] keys)
 		{
-
-			elgamal.SetOtherPublicKey(keys[0], keys[1], keys[2]);
+			eigamal.publicKey[0] = keys[0];
+			eigamal.publicKey[1] = keys[1];
+			eigamal.publicKey[2] = keys[2];
 		}
 		public void SetEGKeysStr(string[] keys)
 		{
-			elgamal.SetOtherPublicKey(Convert.ToInt64(keys[0]), Convert.ToInt64(keys[1]), Convert.ToInt64(keys[2]));
+			eigamal.publicKey[0] = Convert.ToInt64(keys[0]);
+			eigamal.publicKey[1] = Convert.ToInt64(keys[1]);
+			eigamal.publicKey[2] = Convert.ToInt64(keys[2]);
 		}
 		public ulong[] GetEGKeys()
 		{
-			return elgamal.GetMyPublicKey() ;
+			return new ulong[] { (ulong)eigamal.myPublicKey[0], (ulong)eigamal.myPublicKey[1], (ulong)eigamal.myPublicKey[2] };
 		}
 	}
 }

@@ -17,7 +17,6 @@ namespace KP_Crypt
             if (disposing && (components != null))
             {
                 components.Dispose();
-                channel.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -44,8 +43,6 @@ namespace KP_Crypt
             this.button7 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.label6 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -75,6 +72,7 @@ namespace KP_Crypt
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Visible = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // label3
             // 
@@ -143,7 +141,7 @@ namespace KP_Crypt
             this.listBox1.ItemHeight = 20;
             this.listBox1.Location = new System.Drawing.Point(579, 238);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(197, 164);
+            this.listBox1.Size = new System.Drawing.Size(197, 184);
             this.listBox1.TabIndex = 11;
             // 
             // button6
@@ -186,29 +184,11 @@ namespace KP_Crypt
             this.label5.TabIndex = 0;
             this.label5.Text = "Ваш ник:";
             // 
-            // progressBar1
-            // 
-            this.progressBar1.Location = new System.Drawing.Point(588, 162);
-            this.progressBar1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(176, 19);
-            this.progressBar1.TabIndex = 12;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(585, 147);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(51, 13);
-            this.label6.TabIndex = 0;
-            this.label6.Text = "Процесс";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.label4);
@@ -221,7 +201,6 @@ namespace KP_Crypt
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.label6);
             this.Controls.Add(this.label1);
             this.Name = "Form1";
             this.Text = "Шифрование";
@@ -248,8 +227,6 @@ namespace KP_Crypt
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.ProgressBar progressBar1;
-        private System.Windows.Forms.Label label6;
     }
 }
 
