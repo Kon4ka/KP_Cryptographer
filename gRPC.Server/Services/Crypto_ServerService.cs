@@ -14,7 +14,7 @@ namespace gRPC.Server
     {
         private readonly ILogger<Crypto_ServerService> _logger;
         private readonly List<string> _users = new List<string>();
-        private readonly Dictionary<string, byte[][]> _egKeys= new Dictionary<string, byte[]>();
+        private readonly Dictionary<string, byte[][]> _egKeys= new Dictionary<string, byte[][]>();
         private string _defaultPath = "/UserFiles/";
         public Crypto_ServerService(ILogger<Crypto_ServerService> logger)
         {

@@ -287,3 +287,4 @@ C:\Users\KP_Crypt\obj\Debug\KP_Crypt.csproj.CoreCompileInputs.cache
 C:\Users\KP_Crypt\obj\Debug\KP_Crypt.csproj.CopyComplete
 C:\Users\KP_Crypt\obj\Debug\KP_Crypt.exe
 C:\Users\KP_Crypt\obj\Debug\KP_Crypt.pdb
+C:\Users\Kon4ka\source\repos\KP_Crypt\obj\Debug\KP_Crypt.csproj.AssemblyReference.cache

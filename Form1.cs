@@ -18,16 +18,6 @@ namespace KP_Crypt
 {
     public partial class Form1 : Form
     {
-        public Form1(string _name)
-        {
-            InitializeComponent();
-            _myName = _name;
-        }
-        ~Form1()
-        {
-            channel.Dispose();
-        }
-
         private HttpClientHandler unsafeHandler = new HttpClientHandler();
 
         private string _myName = "5000";
@@ -41,6 +31,12 @@ namespace KP_Crypt
         private CryptModesEn _mode = CryptModesEn.CBC;
         private ClientServerComunication _client = new ClientServerComunication();
         private CancellationTokenSource token;
+        private readonly string[] stringSeparators = new string[] { " => " };
+        public Form1(string _name)
+        {
+            InitializeComponent();
+            _myName = _name;
+        }
 
         private async void Form1_Load(object sender, EventArgs e)
         {
@@ -145,13 +141,13 @@ namespace KP_Crypt
                     //Расшифровка ключа
                     byte[] fKeyAndVIByte = takeFROGKey;
                     var tmp = cryptography.UnCryptWithEiGamal(fKeyAndVIByte);
-                    string[] fKeyAndVI = (Encoding.Default.GetString(cryptography.UnCryptWithEiGamal(fKeyAndVIByte))).Split(' ');
+                    string[] fKeyAndVI = (Encoding.Default.GetString(cryptography.UnCryptWithEiGamal(fKeyAndVIByte))).Split(stringSeparators, StringSplitOptions.None);
 
                     cryptography.frogKeyString = fKeyAndVI[0];
-                    cryptography.frogIVectorString = fKeyAndVI[2]; 
-                    if (Encoding.Default.GetBytes(fKeyAndVI[2]).Length < 16)
+                    cryptography.frogIVectorString = fKeyAndVI[1]; 
+                    if (Encoding.Default.GetBytes(fKeyAndVI[1]).Length < 16)
                         cryptography.frogKeyString = fKeyAndVI[0];
-                    cryptography.CreateFROG(Encoding.Default.GetBytes(fKeyAndVI[0]), Encoding.Default.GetBytes(fKeyAndVI[2]));
+                    cryptography.CreateFROG(Encoding.Default.GetBytes(fKeyAndVI[0]), Encoding.Default.GetBytes(fKeyAndVI[1]));
 
                     label2.Text = $"Нашли файл {_name_of_another}.FROGKey.txt, \nВыберите файл для зашифровки и отправки выше.";
                     label1.Text = "";

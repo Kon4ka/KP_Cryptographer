@@ -3,53 +3,52 @@ using System.Text;
 using System.Numerics;
 using KP_Crypt.Cryptograpfy.Prime;
 using System.Security.Cryptography;
+using System.Collections.Generic;
 
 namespace KP_Crypt.Cryptograpfy.EiGamalAlg
 {
-    public class ElGamal : CoderBase
+    public class ElGamal 
     {
         private BigInteger[] _myPublicKey = new BigInteger[3];  //p, g, y
         private BigInteger _privateKey;
         private BigInteger[] _publicKey = new BigInteger[3];
         private Random random = new Random();
 
-        public override byte[] Decrypt(byte[] infoBytes)
+        public byte[] Decrypt(BigInteger[][] infoBytes)
         {
-            string infoStr = Encoding.Default.GetString(infoBytes);
-            string output = "";
-            if (infoStr.Length > 0)
-            {
-                string[] strA = infoStr.Split(' ');
-                if (strA.Length > 0)
+            List<byte> output = new List<byte>();
+
+                if (infoBytes.Length > 0)
                 {
-                    for (long i = 0; i < strA.Length - 1; i += 2)
+                    for (long i = 0; i < infoBytes[0].Length; i++)
                     {
                         BigInteger ai = 0;
                         BigInteger bi = 0;
-                        BigInteger a = BigInteger.Parse(strA[i]);//tryParse
-                        BigInteger b = BigInteger.Parse(strA[i + 1]);//GetBytes
+                        BigInteger a = infoBytes[0][i];
+                        BigInteger b = infoBytes[1][i];
                         if ((a != 0) && (b != 0))
                         {
                             //BigInteger deM = mul(bi, power(ai, p - 1 - x, p), p);// m=b*(a^x)^(-1)mod p =b*a^(p-1-x)mod p - трудно было  найти нормальную формулу, в ней вся загвоздка
                             BigInteger deM = MultMOD(b, FastPow(a, _myPublicKey[0] - 1 - _privateKey, _myPublicKey[0]), _myPublicKey[0]);
                             //char m = (char)deM;
-                            output += ((char)deM).ToString();
+                            output.Add(deM.ToByteArray()[0]);
                         }
                     }
-                    return Encoding.Default.GetBytes(output);
+                    return output.ToArray();
                 }
-            }
             return null;
         }
 
-        private string Encrypting(string infoStr)
+        private BigInteger[][] Encrypting(byte[] infoStr)       //BigInteger[][]
         {
-            string res = "";
+            BigInteger[][] res = new BigInteger[2][];
+            res[0] = new BigInteger[infoStr.Length];
+            res[1] = new BigInteger[infoStr.Length];
 
             if (infoStr.Length > 0)
             {
-                char[] temp = new char[infoStr.Length - 1];
-                temp = infoStr.ToCharArray();
+                byte[] temp = new byte[infoStr.Length - 1];
+                temp = infoStr; //Encoding.Default.GetBytes(
                 for (long i = 0; i <= infoStr.Length - 1; i++)
                 {
                     BigInteger m = new BigInteger(temp[i]);
@@ -58,26 +57,59 @@ namespace KP_Crypt.Cryptograpfy.EiGamalAlg
                         BigInteger k = Rand() % (_publicKey[0] - 2) + 1; // 1 < k < (p-1)
                         BigInteger a = FastPow(_publicKey[1], k, _publicKey[0]);
                         BigInteger b = MultMOD(FastPow(_publicKey[2], k, _publicKey[0]), m, _publicKey[0]);
-                        res += a + " " + b + " ";
+                        //res += a + " " + b + " ";
+ /*                       if (a.ToByteArray().Length > 1 || a.ToByteArray().Length > 1)
+                            a = a + b - b ;*/
+                        res[0][i] = a;
+                        res[1][i] = b;
 
                     }
                 }
                 return res;
             }
-            return "";
+            return null;
         }
 
-        public byte[] EncryptWithOthersKey(byte[] infoBytes, BigInteger[] key)
+/*        struct ABBuffer
+        {
+            ulong aBlen;
+            ulong origMessLen;
+            ulong messLen;
+            byte[] info;
+
+
+            public byte[] BigIntsToByteArray(BigInteger[][] input)
+            {
+                byte[] res = new byte[8*3 + aBlen + origMessLen + messLen];
+                BitConverter.GetBytes(aBlen).CopyTo(res, 0);
+                BitConverter.GetBytes(origMessLen).CopyTo(res, 8);
+                BitConverter.GetBytes(messLen).CopyTo(res, 16);
+                for (int i = 0; i < input.Length; i++)  //a or b 
+                    for (int j = 0; j < input.Length; j++)
+                    {
+                        res[8*3+i+j]
+                    }
+                        //info.CopyTo(res, 8 * 3);
+                        return res;
+            }
+            public BigInteger[][] AllToBigIntArray(byte[] input)
+            {
+
+            }
+        }*/
+
+        public BigInteger[][] EncryptWithOthersKey(byte[] infoBytes, BigInteger[] key)
         {
             _publicKey[0] = key[0];
             _publicKey[1] = key[1];
             _publicKey[2] = key[2];
             string infoStr = Encoding.Default.GetString(infoBytes);
 
-            return Encoding.Default.GetBytes(Encrypting(infoStr));
+            return Encrypting(infoBytes);
+            //return Encoding.Default.GetBytes(Encrypting(infoStr));
         }
 
-        public override byte[] Encrypt(byte[] infoBytes)
+        public BigInteger[][] Encrypt(byte[] infoBytes)
         {
             if (_publicKey[0] == 0)
             {
@@ -85,12 +117,7 @@ namespace KP_Crypt.Cryptograpfy.EiGamalAlg
             }
             string infoStr = Encoding.Default.GetString(infoBytes);
 
-            return Encoding.Default.GetBytes(Encrypting(infoStr));
-        }
-
-        protected override void KeyGeneration()
-        {
-            throw new ArgumentException();
+            return Encrypting(infoBytes);
         }
 
         public void KeyGenerate()//collect

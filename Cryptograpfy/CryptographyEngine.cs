@@ -7,6 +7,7 @@ using KP_Crypt.Cryptograpfy.FROGalg;
 using KP_Crypt.Cryptograpfy.EiGamalAlg;
 using KP_Crypt.Cryptograpfy.CryptModes;
 using KP_Crypt.Cryptograpfy.CryptingModes;
+using System.Numerics;
 
 namespace KP_Crypt.Cryptograpfy
 {
@@ -103,11 +104,11 @@ namespace KP_Crypt.Cryptograpfy
 
 		public byte[] CryptWithEiGamal(byte[] inputBytes)
 		{
-			return elgamal.Encrypt(inputBytes);
+			return ToOutputC(elgamal.Encrypt(inputBytes));
 		}
 		public byte[] UnCryptWithEiGamal(byte[] inputBytes)
 		{
-			return elgamal.Decrypt(inputBytes);
+			return elgamal.Decrypt(ToOutputUnC(inputBytes));
 		}
 
 		public void PrograssInBarCBW(long i, int len, int step)
@@ -152,6 +153,34 @@ namespace KP_Crypt.Cryptograpfy
 		public ulong[] GetEGKeys()
 		{
 			return elgamal.GetMyPublicKey() ;
+		}
+
+		public byte[] ToOutputC(BigInteger[][] to)
+        {
+			StringBuilder s = new StringBuilder();
+
+			for (int i = 0; i < to[0].Length; i++)
+				s.Append(to[0][i] + " " + to[1][i] + " ");
+			return Encoding.Default.GetBytes(s.ToString());
+        }
+
+		public BigInteger[][] ToOutputUnC(byte[] to)
+        {
+			string ins = Encoding.Default.GetString(to);
+			string[] spl = ins.Split(' ');
+			BigInteger[][] res = new BigInteger[2][];
+
+			res[0] = new BigInteger[spl.Length/2];
+			res[1] = new BigInteger[spl.Length / 2];
+
+			int j = 0;
+			for (int i = 0; i < spl.Length-1; i+=2)
+            {
+				BigInteger.TryParse(spl[i], out res[0][j]);
+				BigInteger.TryParse(spl[i+1], out res[1][j]);
+				j++;
+			}
+			return res;
 		}
 	}
 }
