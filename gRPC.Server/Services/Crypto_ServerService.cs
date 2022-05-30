@@ -176,8 +176,7 @@ namespace gRPC.Server
                 StringBuilder allfilenames_str = new StringBuilder();
                 foreach (var file in allfiles)
                 {
-                    allfilenames_str.Append(Path.GetFileNameWithoutExtension(file));
-                    allfilenames_str.Append(",");
+                    allfilenames_str.Append(Path.GetFileNameWithoutExtension(file)).Append(",");
                 }
                 return Task.FromResult(new FileList
                 {
