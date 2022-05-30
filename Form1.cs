@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -162,14 +162,13 @@ namespace KP_Crypt
 
             string filename = Path.GetFileNameWithoutExtension(openFileDialog1.FileName);
             byte[] fileTextByte = System.IO.File.ReadAllBytes(openFileDialog1.FileName);
+            if (fileTextByte.Length == 0)
+            {
+                MessageBox.Show("Вы выбрали пустой файл. Выберите другой");
+                return;
+            }
             label3.Text = "Файл: " + filename + " открыт и готов для шифрования.";
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
->>>>>>> parent of 0b81dab (Progress Bar)
-=======
->>>>>>> parent of 0b81dab (Progress Bar)
             //Шифрование FROG'ом
             byte[] encryptedFile = EncryptFile(fileTextByte).Result;   //progress bar 
 
@@ -178,10 +177,12 @@ namespace KP_Crypt
                 MessageBox.Show("У вас нет необходимых ключей для шифрования.");
                 return;
             }
+            label3.Text = "Файл: " + filename + " зашифрован.";
             //И передача его серваку
             try
             {
                 var sending = await client.SendFileAsync(new FileBuffer { Filename = $"{_myName}.Mess.{filename}", Info = ByteString.CopyFrom(encryptedFile) });
+                label3.Text = "Файл: " + filename + " зашифрован и отправлен на сервер.";
             }
             catch
             {
@@ -235,8 +236,6 @@ namespace KP_Crypt
             {
                 //List<byte> tmp = new List<byte>;
                 byte[] IsSend = await _client.TakeFileAsync(filename, token);
-<<<<<<< HEAD
-<<<<<<< HEAD
                 try
                 {
                     var decryptedText = DecryptFile(IsSend).Result;
@@ -256,34 +255,7 @@ namespace KP_Crypt
                 catch
                 {
                     MessageBox.Show("Произошла ошибка при попытке расшифровать файл.");
-=======
-                var decryptedText = DecryptFile(IsSend).Result;
-                string path = Directory.GetCurrentDirectory();
-                if (!Directory.Exists(path + "/Messages/"))
-                {
-                    Directory.CreateDirectory(path + "/Messages/");
                 }
-                if (decryptedText is null)
-                {
-                    MessageBox.Show("Отсутствуют необходимые ключи для расшифровки. Попробуйте загрузить с сервера ключ FROG");
-                    return;
->>>>>>> parent of 0b81dab (Progress Bar)
-                }
-=======
-                var decryptedText = DecryptFile(IsSend).Result;
-                string path = Directory.GetCurrentDirectory();
-                if (!Directory.Exists(path + "/Messages/"))
-                {
-                    Directory.CreateDirectory(path + "/Messages/");
-                }
-                if (decryptedText is null)
-                {
-                    MessageBox.Show("Отсутствуют необходимые ключи для расшифровки. Попробуйте загрузить с сервера ключ FROG");
-                    return;
-                }
->>>>>>> parent of 0b81dab (Progress Bar)
-                File.WriteAllBytes(path + "/Messages/" + filename + ".txt", decryptedText);
-                //Расшифровать
             }
             else
             {
