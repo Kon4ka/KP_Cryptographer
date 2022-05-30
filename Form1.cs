@@ -164,7 +164,10 @@ namespace KP_Crypt
             byte[] fileTextByte = System.IO.File.ReadAllBytes(openFileDialog1.FileName);
             label3.Text = "Файл: " + filename + " открыт и готов для шифрования.";
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of 0b81dab (Progress Bar)
 =======
 >>>>>>> parent of 0b81dab (Progress Bar)
             //Шифрование FROG'ом
@@ -233,6 +236,7 @@ namespace KP_Crypt
                 //List<byte> tmp = new List<byte>;
                 byte[] IsSend = await _client.TakeFileAsync(filename, token);
 <<<<<<< HEAD
+<<<<<<< HEAD
                 try
                 {
                     var decryptedText = DecryptFile(IsSend).Result;
@@ -265,6 +269,19 @@ namespace KP_Crypt
                     return;
 >>>>>>> parent of 0b81dab (Progress Bar)
                 }
+=======
+                var decryptedText = DecryptFile(IsSend).Result;
+                string path = Directory.GetCurrentDirectory();
+                if (!Directory.Exists(path + "/Messages/"))
+                {
+                    Directory.CreateDirectory(path + "/Messages/");
+                }
+                if (decryptedText is null)
+                {
+                    MessageBox.Show("Отсутствуют необходимые ключи для расшифровки. Попробуйте загрузить с сервера ключ FROG");
+                    return;
+                }
+>>>>>>> parent of 0b81dab (Progress Bar)
                 File.WriteAllBytes(path + "/Messages/" + filename + ".txt", decryptedText);
                 //Расшифровать
             }
