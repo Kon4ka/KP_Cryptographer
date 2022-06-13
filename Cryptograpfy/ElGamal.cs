@@ -48,7 +48,7 @@ namespace KP_Crypt.Cryptograpfy.EiGamalAlg
             if (infoStr.Length > 0)
             {
                 byte[] temp = new byte[infoStr.Length - 1];
-                temp = infoStr; //Encoding.Default.GetBytes(
+                temp = infoStr; 
                 for (long i = 0; i <= infoStr.Length - 1; i++)
                 {
                     BigInteger m = new BigInteger(temp[i]);
@@ -57,9 +57,6 @@ namespace KP_Crypt.Cryptograpfy.EiGamalAlg
                         BigInteger k = Rand() % (_publicKey[0] - 2) + 1; // 1 < k < (p-1)
                         BigInteger a = FastPow(_publicKey[1], k, _publicKey[0]);
                         BigInteger b = MultMOD(FastPow(_publicKey[2], k, _publicKey[0]), m, _publicKey[0]);
-                        //res += a + " " + b + " ";
- /*                       if (a.ToByteArray().Length > 1 || a.ToByteArray().Length > 1)
-                            a = a + b - b ;*/
                         res[0][i] = a;
                         res[1][i] = b;
 
@@ -103,10 +100,8 @@ namespace KP_Crypt.Cryptograpfy.EiGamalAlg
             _publicKey[0] = key[0];
             _publicKey[1] = key[1];
             _publicKey[2] = key[2];
-            string infoStr = Encoding.Default.GetString(infoBytes);
 
             return Encrypting(infoBytes);
-            //return Encoding.Default.GetBytes(Encrypting(infoStr));
         }
 
         public BigInteger[][] Encrypt(byte[] infoBytes)
@@ -124,7 +119,6 @@ namespace KP_Crypt.Cryptograpfy.EiGamalAlg
         {
             SimplePrime primes = new SimplePrime(PrimeTestMode.SoloveyShtrasen, 0.98, 64);//upper
             BigInteger curKey;
-            //Random r = new Random();
             RandomNumberGenerator rnd = RandomNumberGenerator.Create();
 
             // P

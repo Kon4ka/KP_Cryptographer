@@ -79,7 +79,7 @@ namespace KP_Crypt.Client_Serviece
             }
         }
 
-        public async Task<int> SendEGKeyAsync(ulong[] keys, CancellationTokenSource token)
+        public async Task<int> SendEGKeyAsync(ulong[] keys, CancellationTokenSource token = default)//
         {
             try
             {

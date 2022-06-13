@@ -167,7 +167,7 @@ namespace KP_Crypt.Cryptograpfy.FROGalg
                 Format(key3);
                 // Проводим анализ цепочек ссылок таблицы индексов
                 // Должны получить одну цепочку ссылок
-                MakeSingleCycle(key3);
+                MakeSingleCycle(key3); 
 
                 // Меняем некоторые элементы 
                 // key3[j] == j + 1 -> key3[j] = ((j + 2) % 16)
@@ -261,7 +261,7 @@ namespace KP_Crypt.Cryptograpfy.FROGalg
                     result[resultOffset + i] ^= encryptRoundKeys[round][0][i];
                     // 2. Выбирается байт, порядковый номер которого равен значению, вычисленному на первом шаге
                     result[resultOffset + i] = encryptRoundKeys[round][1][result[resultOffset + i]];
-                    // // 3. Если предпоследний байт то XOR'им с ним последний
+                    // 3. Если предпоследний байт то XOR'им с ним последний
                     if (i < _chipherPartSize - 1)
                         result[resultOffset + i + 1] ^= result[resultOffset + i];
                     // 4. По индексу из ключа (его 3ей части)
